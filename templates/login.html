@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+<!--
+  FnB - Login Page
+  Author: Harsh
+  SRS Reference: Section 4.1.2 - Stimulus/Response: Login
+  D-SQ-01: User → Browser (GET /login) → render form → POST(user,pass)
+  REQ-4.1.2: Secure login with credentials
+-->
+
+{% block title %}Login – FnB{% endblock %}
+
+{% block content %}
+<div class="auth-wrapper">
+  <div class="auth-card">
+
+    <div class="auth-header">
+      <div class="auth-logo">⚙</div>
+      <h1 class="auth-title">Welcome to FnB</h1>
+      <p class="auth-subtitle">Fetch &amp; Build – Project Review Platform</p>
+    </div>
+
+    <form method="POST" action="{{ url_for('auth.login') }}" class="auth-form">
+
+      <div class="form-group">
+        <label for="username" class="form-label">Username</label>
+        <input
+          type="text"
+          id="username"
+          name="username"
+          class="form-input"
+          placeholder="Enter your username"
+          required
+          autocomplete="username"
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="password" class="form-label">Password</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          class="form-input"
+          placeholder="Enter your password"
+          required
+          autocomplete="current-password"
+        />
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-full">Login</button>
+
+    </form>
+
+    <div class="auth-footer">
+      <p>Don't have an account? <a href="{{ url_for('auth.register') }}" class="link">Register here</a></p>
+    </div>
+
+  </div>
+</div>
+{% endblock %}
