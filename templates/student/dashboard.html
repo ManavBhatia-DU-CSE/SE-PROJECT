@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+<!--
+  FnB - Student Dashboard
+  Author: Hitesh
+  SRS Reference: Section 4.2 - Project Submission and Review
+  REQ-4.2.2: Shows only this student's projects (D-SEC-07 enforced in route)
+  REQ-4.2.6: Secure access to own projects only
+-->
+
+{% block title %}Student Dashboard – FnB{% endblock %}
+
+{% block content %}
+
+
+<div class="page-wrapper">
+
+  <!-- Page Header -->
+  <div class="d-flex justify-between align-center mb-2">
+    <div>
+      <h2 class="page-title">👤 Student Dashboard</h2>
+      <p class="text-muted">Welcome, <strong>{{ username }}</strong>! Here are your submitted projects.</p>
+    </div>
+    <a href="{{ url_for('student.submit_project') }}" class="btn btn-primary">+ Submit New Project</a>
+  </div>
+
+  <!-- Stats Row -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-number">{{ projects | length }}</div>
+      <div class="stat-label">Total Projects</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number" style="color: var(--warning);">
+        {{ projects | selectattr('status', 'equalto', 'pending') | list | length }}
+      </div>
+      <div class="stat-label">Pending Review</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number" style="color: var(--success);">
+        {{ projects | selectattr('status', 'equalto', 'reviewed') | list | length }}
+      </div>
+      <div class="stat-label">Reviewed</div>
+    </div>
+  </div>
+
+  <!-- Projects Section -->
+  {% if projects %}
+    <p class="section-title">Your Projects</p>
+    <div class="cards-grid">
+      {% for project in projects %}
+      <div class="proj-card">
+        <div class="d-flex justify-between align-center">
+          <span class="proj-card-title">{{ project.title }}</span>
+          <span class="badge badge-{{ project.status }}">{{ project.status | capitalize }}</span>
+        </div>
+
+        <div class="proj-card-meta">
+          <span>🛠 {{ project.tech_stack }}</span>
+          <span>💡 {{ project.innovation_level | capitalize }}</span>
+          {% if project.quality_rating %}
+            <span>⭐ {{ project.quality_rating }}/5</span>
+          {% endif %}
+        </div>
+
+        <p class="proj-card-desc">{{ project.description[:120] }}{% if project.description|length > 120 %}...{% endif %}</p>
+
+        {% if project.usp %}
+        <p class="proj-card-desc"><strong>USP:</strong> {{ project.usp }}</p>
+        {% endif %}
+
+        <div class="proj-card-footer">
+          <span class="text-muted" style="font-size:0.78rem;">
+            📅 {{ project.submitted_at.strftime('%d %b %Y') if project.submitted_at else 'N/A' }}
+          </span>
+          {% if project.status == 'reviewed' %}
+            <a href="{{ url_for('student.my_feedback') }}" class="btn btn-success btn-sm">View Feedback</a>
+          {% else %}
+            <span class="text-muted" style="font-size:0.82rem;">Awaiting review...</span>
+          {% endif %}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+  {% else %}
+    <!-- Empty State -->
+    <div class="table-wrapper">
+      <div class="empty-state">
+        <div class="empty-state-icon">📂</div>
+        <h3>No projects yet</h3>
+        <p>Submit your first project and get feedback from your teacher.</p>
+        <a href="{{ url_for('student.submit_project') }}" class="btn btn-primary">Submit Your First Project</a>
+      </div>
+    </div>
+  {% endif %}
+
+</div>
+{% endblock %}
