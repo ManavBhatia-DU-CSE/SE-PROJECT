@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<!--
+  FnB - Base Template (Jinja2 / Flask)
+  Author: Harsh
+  SRS Reference: Section 3.1 - User Interfaces
+  Provides: Consistent layout, role-specific navigation, flash messages, logout button
+  REQ-4.1.3: Role-specific menus, REQ-4.1.6: Logout always accessible
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %}FnB - Fetch and Build{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+<body>
+
+  <!-- ── Navigation Bar ──────────────────────────────────────────────── -->
+  <nav class="navbar">
+    <div class="nav-brand">
+      <span class="brand-icon">⚙</span>
+      <span class="brand-text">FnB</span>
+      <span class="brand-sub">Fetch &amp; Build</span>
+    </div>
+
+    {% if session.get('user_id') %}
+    <div class="nav-links">
+
+      {% if session.get('role') == 'student' %}
+        <a href="{{ url_for('student.dashboard') }}" class="nav-link">Dashboard</a>
+        <a href="{{ url_for('student.submit_project') }}" class="nav-link">Submit Project</a>
+        <a href="{{ url_for('student.my_feedback') }}" class="nav-link">My Feedback</a>
+
+      {% elif session.get('role') == 'teacher' %}
+        <a href="{{ url_for('teacher.dashboard') }}" class="nav-link">Dashboard</a>
+        <a href="{{ url_for('teacher.project_list') }}" class="nav-link">View Projects</a>
+
+      {% elif session.get('role') == 'admin' %}
+        <a href="{{ url_for('admin.dashboard') }}" class="nav-link">Dashboard</a>
+        <a href="{{ url_for('admin.manage_users') }}" class="nav-link">Manage Users</a>
+      {% endif %}
+
+      <a href="{{ url_for('auth.change_password') }}" class="nav-link">Change Password</a>
+    </div>
+
+    <div class="nav-user">
+      <span class="user-badge user-badge--{{ session.get('role') }}">
+        {{ session.get('role', '').upper() }}
+      </span>
+      <span class="username-text">{{ session.get('username') }}</span>
+      <a href="{{ url_for('auth.logout') }}" class="btn btn-logout">Logout</a>
+    </div>
+    {% else %}
+    <div class="nav-links">
+      <a href="{{ url_for('auth.login') }}" class="nav-link">Login</a>
+      <a href="{{ url_for('auth.register') }}" class="nav-link">Register</a>
+    </div>
+    {% endif %}
+  </nav>
+
+  <!-- ── Flash Messages ─────────────────────────────────────────────── -->
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="flash-container">
+        {% for category, message in messages %}
+          <div class="flash flash--{{ category }}">
+            <span>{{ message }}</span>
+            <button class="flash-close" onclick="this.parentElement.remove()">✕</button>
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  <!-- ── Main Content ───────────────────────────────────────────────── -->
+  <main class="main-content">
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- ── Footer ────────────────────────────────────────────────────── -->
+  <footer class="footer">
+    <p>FnB (Fetch &amp; Build) &mdash; Student Project Review Platform &mdash; Version 2.0</p>
+  </footer>
+
+  <script>
+    // Auto-dismiss flash messages after 4 seconds
+    setTimeout(() => {
+      document.querySelectorAll('.flash').forEach(el => el.remove());
+    }, 4000);
+  </script>
+
+</body>
+</html>
