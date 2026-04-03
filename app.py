@@ -3,7 +3,7 @@
 
 import os
 from flask import Flask, redirect, url_for, session
-from models.db import mongo
+from db import mongo
 from routes.auth_routes import auth_bp
 from routes.student_routes import student_bp
 from routes.teacher_routes import teacher_bp
