@@ -30,4 +30,13 @@
     </div>
   </div>
 
- 
+  <!-- Quick Actions -->
+  <div class="page-card" style="margin-top: 1rem;">
+    <p class="section-title">Quick Actions</p>
+    <div class="d-flex gap-1" style="flex-wrap: wrap;">
+      <a href="{{ url_for('teacher.project_list') }}" class="btn btn-primary">📋 All Projects</a>
+      <a href="{{ url_for('teacher.project_list') }}?status=pending" class="btn btn-outline">⏳ Pending Projects</a>
+      <a href="{{ url_for('teacher.project_list') }}?status=reviewed" class="btn btn-outline">✅ Reviewed Projects</a>
+    </div>
+  </div>
+
