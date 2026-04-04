@@ -59,4 +59,64 @@
     </div>
   </form>
 
+  <!-- Project Count -->
+  <p class="text-muted mb-1" style="font-size:0.88rem;">
+    Showing <strong>{{ projects | length }}</strong> project(s)
+    {% if tech_filter or innovation_filter or status_filter %} (filtered){% endif %}
+  </p>
+
+  <!-- Projects Table -->
+  {% if projects %}
+  <div class="table-wrapper">
+    <table class="fnb-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Project Title</th>
+          <th>Tech Stack</th>
+          <th>Innovation</th>
+          <th>Quality</th>
+          <th>Status</th>
+          <th>Submitted</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for project in projects %}
+        <tr>
+          <td>{{ loop.index }}</td>
+          <td><strong>{{ project.title }}</strong></td>
+          <td>{{ project.tech_stack }}</td>
+          <td>
+            {% if project.innovation_level == 'high' %}
+              <span class="badge" style="background:#dcfce7;color:#15803d;">🔥 High</span>
+            {% elif project.innovation_level == 'medium' %}
+              <span class="badge badge-pending">Medium</span>
+            {% else %}
+              <span class="badge" style="background:#f1f5f9;color:#64748b;">Low</span>
+            {% endif %}
+          </td>
+          <td>
+            {% if project.quality_rating %}
+              <span class="stars">{{ '★' * project.quality_rating }}{{ '☆' * (5 - project.quality_rating) }}</span>
+            {% else %}
+              <span class="text-muted">—</span>
+            {% endif %}
+          </td>
+          <td><span class="badge badge-{{ project.status }}">{{ project.status | capitalize }}</span></td>
+          <td>{{ project.submitted_at.strftime('%d %b %Y') if project.submitted_at else 'N/A' }}</td>
+          <td>
+            <div class="d-flex gap-1">
+              <a href="{{ url_for('teacher.project_detail', project_id=project._id) }}" class="btn btn-outline btn-sm">Details</a>
+              <a href="{{ url_for('teacher.give_feedback', project_id=project._id) }}" class="btn btn-primary btn-sm">
+                {% if project.status == 'reviewed' %}Edit Feedback{% else %}Give Feedback{% endif %}
+              </a>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
   
