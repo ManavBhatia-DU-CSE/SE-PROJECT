@@ -119,4 +119,24 @@
     </table>
   </div>
 
-  
+  {% else %}
+    <div class="table-wrapper">
+      <div class="empty-state">
+        <div class="empty-state-icon">📭</div>
+        <h3>No projects found</h3>
+        <p>
+          {% if tech_filter or innovation_filter or status_filter %}
+            No projects match the selected filters. Try clearing them.
+          {% else %}
+            No student projects have been submitted yet.
+          {% endif %}
+        </p>
+        {% if tech_filter or innovation_filter or status_filter %}
+          <a href="{{ url_for('teacher.project_list') }}" class="btn btn-outline">Clear Filters</a>
+        {% endif %}
+      </div>
+    </div>
+  {% endif %}
+
+</div>
+{% endblock %}
