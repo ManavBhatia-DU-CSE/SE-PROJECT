@@ -30,4 +30,33 @@
 
     <hr style="border: none; border-top: 1px solid var(--border); margin: 1rem 0;" />
 
-    
+    <!-- Project Metadata Grid -->
+    <div class="detail-grid">
+      <div class="detail-item">
+        <div class="detail-label">🛠 Technology Stack</div>
+        <div class="detail-value">{{ project.tech_stack }}</div>
+      </div>
+      <div class="detail-item">
+        <div class="detail-label">💡 Innovation Level</div>
+        <div class="detail-value">{{ project.innovation_level | capitalize }}</div>
+      </div>
+      <div class="detail-item">
+        <div class="detail-label">🎯 USP</div>
+        <div class="detail-value">{{ project.usp if project.usp else '—' }}</div>
+      </div>
+      <div class="detail-item">
+        <div class="detail-label">⭐ Quality Rating</div>
+        <div class="detail-value">
+          {% if project.quality_rating %}
+            <span class="stars">{{ '★' * project.quality_rating }}{{ '☆' * (5 - project.quality_rating) }}</span>
+            ({{ project.quality_rating }}/5)
+          {% else %}
+            Not rated yet
+          {% endif %}
+        </div>
+      </div>
+      <div class="detail-item">
+        <div class="detail-label">📎 Project File</div>
+        <div class="detail-value">{{ project.file_path if project.file_path else 'No file uploaded' }}</div>
+      </div>
+    </div>
