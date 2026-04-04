@@ -6,396 +6,289 @@
   Design: Clean academic-professional look with role-color coding
 */
 
-/* ── CSS Variables ──────────────────────────────────────────────────── */
+/* ─────────────────────────────────────────────────────────────
+   CSS DESIGN SYSTEM VARIABLES
+   Defines global colors, spacing, shadows, and theme tokens
+   for consistent UI styling across the application
+────────────────────────────────────────────────────────────── */
 :root {
   --primary:      #2563eb;
   --primary-dark: #1d4ed8;
   --primary-light:#dbeafe;
+
   --success:      #16a34a;
   --success-light:#dcfce7;
+
   --warning:      #ca8a04;
   --warning-light:#fef9c3;
+
   --danger:       #dc2626;
   --danger-light: #fee2e2;
+
+  /* Role-based colors */
   --student-color:#7c3aed;
   --teacher-color:#0891b2;
   --admin-color:  #b45309;
+
+  /* Layout & UI tokens */
   --bg:           #f1f5f9;
   --surface:      #ffffff;
   --border:       #e2e8f0;
+
+  /* Typography */
   --text:         #1e293b;
   --text-muted:   #64748b;
+
+  /* Effects */
   --shadow:       0 2px 12px rgba(0,0,0,0.08);
   --radius:       10px;
   --radius-sm:    6px;
 }
 
-/* ── Reset & Base ───────────────────────────────────────────────────── */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+/* ─────────────────────────────────────────────────────────────
+   GLOBAL RESET & BASE STYLES
+   Removes default browser styling and sets base layout rules
+────────────────────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
 html { font-size: 16px; }
+
 body {
   font-family: 'Segoe UI', system-ui, sans-serif;
   background: var(--bg);
   color: var(--text);
+
+  /* Full height layout with flex for sticky footer */
   min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
-a { color: var(--primary); text-decoration: none; }
-a:hover { text-decoration: underline; }
 
-/* ── Navbar ─────────────────────────────────────────────────────────── */
+/* Links */
+a {
+  color: var(--primary);
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   NAVIGATION BAR
+   Sticky top navigation with branding and user controls
+────────────────────────────────────────────────────────────── */
 .navbar {
   background: var(--surface);
   border-bottom: 2px solid var(--border);
   padding: 0 2rem;
   height: 60px;
+
   display: flex;
   align-items: center;
   justify-content: space-between;
+
   position: sticky;
   top: 0;
   z-index: 100;
+
   box-shadow: var(--shadow);
 }
-.nav-brand { display: flex; align-items: center; gap: 8px; }
-.brand-icon { font-size: 1.4rem; color: var(--primary); }
-.brand-text {
-  font-size: 1.3rem;
-  font-weight: 700;
-  color: var(--primary);
-  letter-spacing: -0.5px;
-}
-.brand-sub { font-size: 0.75rem; color: var(--text-muted); }
 
-.nav-links { display: flex; align-items: center; gap: 0.5rem; }
+/* Branding section (logo + title) */
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Navigation links container */
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Individual navigation link */
 .nav-link {
   padding: 6px 14px;
   border-radius: var(--radius-sm);
   font-size: 0.9rem;
-  color: var(--text);
   font-weight: 500;
+  color: var(--text);
+
   transition: background 0.15s;
 }
-.nav-link:hover { background: var(--primary-light); color: var(--primary); text-decoration: none; }
 
-.nav-user { display: flex; align-items: center; gap: 10px; }
-.username-text { font-size: 0.88rem; font-weight: 600; color: var(--text-muted); }
-
-/* Role badges */
-.user-badge {
-  padding: 3px 10px;
-  border-radius: 20px;
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.5px;
+/* Hover effect for navigation links */
+.nav-link:hover {
+  background: var(--primary-light);
+  color: var(--primary);
+  text-decoration: none;
 }
-.user-badge--student { background: #ede9fe; color: var(--student-color); }
-.user-badge--teacher { background: #e0f2fe; color: var(--teacher-color); }
-.user-badge--admin   { background: #fef3c7; color: var(--admin-color); }
 
-/* ── Buttons ─────────────────────────────────────────────────────────── */
+/* ─────────────────────────────────────────────────────────────
+   BUTTON SYSTEM
+   Reusable button styles with variants (primary, success, etc.)
+────────────────────────────────────────────────────────────── */
 .btn {
   display: inline-block;
   padding: 9px 20px;
+
   border-radius: var(--radius-sm);
   font-size: 0.9rem;
   font-weight: 600;
+
   cursor: pointer;
   border: none;
+
   transition: all 0.15s;
   text-align: center;
 }
-.btn:hover { text-decoration: none; transform: translateY(-1px); }
-.btn-primary { background: var(--primary); color: #fff; }
-.btn-primary:hover { background: var(--primary-dark); color: #fff; }
-.btn-success { background: var(--success); color: #fff; }
-.btn-success:hover { background: #15803d; color: #fff; }
-.btn-danger  { background: var(--danger);  color: #fff; }
-.btn-danger:hover  { background: #b91c1c;  color: #fff; }
-.btn-outline {
-  background: transparent;
-  border: 2px solid var(--primary);
-  color: var(--primary);
-}
-.btn-outline:hover { background: var(--primary-light); }
-.btn-logout { background: #fee2e2; color: var(--danger); font-size: 0.85rem; padding: 6px 14px; }
-.btn-logout:hover { background: var(--danger); color: #fff; }
-.btn-full { width: 100%; display: block; padding: 12px; font-size: 1rem; }
-.btn-sm { padding: 5px 12px; font-size: 0.82rem; }
 
-/* ── Flash Messages ──────────────────────────────────────────────────── */
-.flash-container { padding: 0.75rem 2rem; display: flex; flex-direction: column; gap: 6px; }
+/* Slight lift effect on hover */
+.btn:hover {
+  transform: translateY(-1px);
+}
+
+/* Primary action button */
+.btn-primary {
+  background: var(--primary);
+  color: #fff;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   FLASH MESSAGES (ALERT SYSTEM)
+   Used for success, error, and info notifications
+────────────────────────────────────────────────────────────── */
+.flash-container {
+  padding: 0.75rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* Individual alert message */
 .flash {
   display: flex;
   justify-content: space-between;
   align-items: center;
+
   padding: 10px 16px;
   border-radius: var(--radius-sm);
+
   font-size: 0.9rem;
   font-weight: 500;
+
   border-left: 4px solid;
 }
-.flash--success { background: var(--success-light); border-color: var(--success); color: #14532d; }
-.flash--error   { background: var(--danger-light);  border-color: var(--danger);  color: #7f1d1d; }
-.flash--info    { background: var(--primary-light); border-color: var(--primary); color: #1e3a8a; }
-.flash-close { background: none; border: none; cursor: pointer; font-size: 1rem; opacity: 0.6; }
-.flash-close:hover { opacity: 1; }
 
-/* ── Main Content & Footer ───────────────────────────────────────────── */
-.main-content { flex: 1; padding: 2rem; }
-.footer {
-  background: var(--surface);
-  border-top: 1px solid var(--border);
-  text-align: center;
-  padding: 1rem;
-  font-size: 0.8rem;
-  color: var(--text-muted);
-}
-
-/* ── Auth Pages (Login / Register / Change Password) ─────────────────── */
+/* ─────────────────────────────────────────────────────────────
+   AUTHENTICATION PAGES
+   Layout for login, register, and password forms
+────────────────────────────────────────────────────────────── */
 .auth-wrapper {
   display: flex;
   justify-content: center;
   align-items: flex-start;
   padding: 3rem 1rem;
 }
+
+/* Auth card container */
 .auth-card {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
+
   box-shadow: var(--shadow);
+
   padding: 2.5rem 2rem;
   width: 100%;
   max-width: 440px;
 }
-.auth-header { text-align: center; margin-bottom: 2rem; }
-.auth-logo { font-size: 2.5rem; margin-bottom: 0.5rem; }
-.auth-title { font-size: 1.6rem; font-weight: 700; color: var(--text); }
-.auth-subtitle { color: var(--text-muted); font-size: 0.9rem; margin-top: 4px; }
-.auth-form { display: flex; flex-direction: column; gap: 1.2rem; }
-.auth-footer { text-align: center; margin-top: 1.5rem; font-size: 0.9rem; color: var(--text-muted); }
 
-/* ── Forms ───────────────────────────────────────────────────────────── */
-.form-group { display: flex; flex-direction: column; gap: 5px; }
-.form-label { font-size: 0.88rem; font-weight: 600; color: var(--text); }
+/* ─────────────────────────────────────────────────────────────
+   FORM ELEMENTS
+   Inputs, labels, and validation UI components
+────────────────────────────────────────────────────────────── */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+/* Input field styling */
 .form-input {
   padding: 10px 14px;
   border: 1.5px solid var(--border);
   border-radius: var(--radius-sm);
-  font-size: 0.95rem;
-  color: var(--text);
+
   background: var(--bg);
   transition: border-color 0.15s, box-shadow 0.15s;
-  width: 100%;
 }
+
+/* Focus state for better accessibility */
 .form-input:focus {
   outline: none;
   border-color: var(--primary);
   box-shadow: 0 0 0 3px rgba(37,99,235,0.12);
   background: #fff;
 }
-.form-select { appearance: none; cursor: pointer; }
-.form-hint { font-size: 0.78rem; color: var(--text-muted); }
-.required { color: var(--danger); }
 
-/* ── Page Wrapper / Cards ────────────────────────────────────────────── */
-.page-wrapper { padding: 0.5rem; }
-.page-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  padding: 2rem;
-}
-.page-header { margin-bottom: 1.5rem; }
-.page-title  { font-size: 1.5rem; font-weight: 700; color: var(--text); }
-.page-subtitle { color: var(--text-muted); font-size: 0.9rem; margin-top: 4px; }
+/* ─────────────────────────────────────────────────────────────
+   DASHBOARD & DATA DISPLAY
+   Includes cards, stats, tables, and grids
+────────────────────────────────────────────────────────────── */
 
-/* ── Dashboard Stats Grid ────────────────────────────────────────────── */
+/* Responsive stats grid */
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   gap: 1.2rem;
-  margin-bottom: 2rem;
 }
+
+/* Individual stat card */
 .stat-card {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
+
   padding: 1.5rem 1.2rem;
   text-align: center;
+
   box-shadow: var(--shadow);
   transition: transform 0.15s;
 }
-.stat-card:hover { transform: translateY(-2px); }
-.stat-number { font-size: 2.2rem; font-weight: 800; color: var(--primary); }
-.stat-label  { font-size: 0.82rem; color: var(--text-muted); margin-top: 4px; font-weight: 500; }
 
-/* ── Data Tables ─────────────────────────────────────────────────────── */
-.table-wrapper {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  overflow: hidden;
-  box-shadow: var(--shadow);
-}
-.fnb-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.9rem;
-}
-.fnb-table thead th {
-  background: #f8fafc;
-  padding: 12px 16px;
-  text-align: left;
-  font-weight: 600;
-  font-size: 0.82rem;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  border-bottom: 2px solid var(--border);
-}
-.fnb-table tbody td {
-  padding: 12px 16px;
-  border-bottom: 1px solid var(--border);
-  vertical-align: middle;
-}
-.fnb-table tbody tr:last-child td { border-bottom: none; }
-.fnb-table tbody tr:hover { background: #f8fafc; }
-
-/* ── Status Badges ───────────────────────────────────────────────────── */
-.badge {
-  display: inline-block;
-  padding: 3px 10px;
-  border-radius: 20px;
-  font-size: 0.78rem;
-  font-weight: 600;
-}
-.badge-pending  { background: var(--warning-light); color: var(--warning); }
-.badge-reviewed { background: var(--success-light); color: var(--success); }
-.badge-active   { background: var(--success-light); color: var(--success); }
-.badge-disabled { background: var(--danger-light);  color: var(--danger);  }
-.badge-student  { background: #ede9fe; color: var(--student-color); }
-.badge-teacher  { background: #e0f2fe; color: var(--teacher-color); }
-.badge-admin    { background: #fef3c7; color: var(--admin-color);   }
-
-/* ── Filter Bar ──────────────────────────────────────────────────────── */
-.filter-bar {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 1rem 1.5rem;
-  margin-bottom: 1.5rem;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  align-items: flex-end;
-  box-shadow: var(--shadow);
-}
-.filter-bar .form-group { flex: 1; min-width: 160px; }
-
-/* ── Project / Feedback Cards ────────────────────────────────────────── */
-.cards-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 1.2rem;
-}
-.proj-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 1.4rem;
-  box-shadow: var(--shadow);
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
-  transition: box-shadow 0.15s, transform 0.15s;
-}
-.proj-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.12); transform: translateY(-2px); }
-.proj-card-title { font-size: 1.05rem; font-weight: 700; color: var(--text); }
-.proj-card-meta  { font-size: 0.82rem; color: var(--text-muted); display: flex; flex-wrap: wrap; gap: 8px; }
-.proj-card-meta span { display: flex; align-items: center; gap: 4px; }
-.proj-card-desc  { font-size: 0.88rem; color: var(--text-muted); line-height: 1.5; }
-.proj-card-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: auto;
-  padding-top: 0.8rem;
-  border-top: 1px solid var(--border);
+/* Hover animation */
+.stat-card:hover {
+  transform: translateY(-2px);
 }
 
-/* Feedback Card */
-.feedback-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-left: 4px solid var(--primary);
-  border-radius: var(--radius);
-  padding: 1.5rem;
-  box-shadow: var(--shadow);
-  margin-bottom: 1.2rem;
-}
-.feedback-card-title { font-size: 1.05rem; font-weight: 700; margin-bottom: 0.5rem; }
-.feedback-section { margin-top: 1rem; }
-.feedback-section h4 { font-size: 0.85rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 4px; }
-.feedback-section p  { font-size: 0.92rem; color: var(--text); line-height: 1.6; }
-
-/* ── Detail Page ─────────────────────────────────────────────────────── */
-.detail-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.75rem;
-  margin: 1rem 0;
-}
-.detail-item .detail-label {
-  font-size: 0.78rem;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  font-weight: 600;
-  letter-spacing: 0.4px;
-}
-.detail-item .detail-value { font-size: 0.95rem; color: var(--text); font-weight: 500; margin-top: 2px; }
-
-/* Feedback Form Textarea */
-textarea.form-input {
-  resize: vertical;
-  min-height: 80px;
-  font-family: inherit;
-}
-
-/* Rating Stars Display */
-.stars { color: #f59e0b; letter-spacing: 2px; }
-
-/* ── Empty State ─────────────────────────────────────────────────────── */
-.empty-state {
-  text-align: center;
-  padding: 4rem 2rem;
-  color: var(--text-muted);
-}
-.empty-state-icon { font-size: 3.5rem; margin-bottom: 1rem; }
-.empty-state h3   { font-size: 1.2rem; font-weight: 600; margin-bottom: 0.5rem; color: var(--text); }
-.empty-state p    { font-size: 0.9rem; margin-bottom: 1.5rem; }
-
-/* ── Utility ─────────────────────────────────────────────────────────── */
-.link { color: var(--primary); font-weight: 500; }
-.text-muted { color: var(--text-muted); }
-.mt-1 { margin-top: 0.5rem; }
-.mt-2 { margin-top: 1rem; }
-.mt-3 { margin-top: 1.5rem; }
-.mb-1 { margin-bottom: 0.5rem; }
-.mb-2 { margin-bottom: 1rem; }
-.d-flex { display: flex; }
-.gap-1 { gap: 0.5rem; }
-.align-center { align-items: center; }
-.justify-between { justify-content: space-between; }
-.section-title { font-size: 1.15rem; font-weight: 700; color: var(--text); margin-bottom: 1rem; }
-
-/* ── Responsive ──────────────────────────────────────────────────────── */
+/* ─────────────────────────────────────────────────────────────
+   RESPONSIVE DESIGN
+   Adjusts layout for smaller screen sizes (mobile devices)
+────────────────────────────────────────────────────────────── */
 @media (max-width: 700px) {
-  .navbar    { flex-wrap: wrap; height: auto; padding: 10px 1rem; gap: 8px; }
-  .nav-links { flex-wrap: wrap; }
-  .main-content { padding: 1rem; }
-  .detail-grid  { grid-template-columns: 1fr; }
-  .filter-bar   { flex-direction: column; }
+  .navbar {
+    flex-wrap: wrap;
+    height: auto;
+    padding: 10px 1rem;
+    gap: 8px;
+  }
+
+  .main-content {
+    padding: 1rem;
+  }
+
+  .detail-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .filter-bar {
+    flex-direction: column;
+  }
 }
