@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+
+{% block title %}All Projects – FnB{% endblock %}
+
+{% block content %}
+<div class="page-wrapper">
+
+  <!-- Header -->
+  <div class="d-flex justify-between align-center mb-2">
+    <div>
+      <h2 class="page-title">📋 Student Projects</h2>
+      <p class="text-muted">Browse and review all submitted student projects.</p>
+    </div>
+    <a href="{{ url_for('teacher.dashboard') }}" class="btn btn-outline">← Dashboard</a>
+  </div>
+
+  <!-- Filter Bar — REQ-4.2.5 -->
+  <form method="GET" action="{{ url_for('teacher.project_list') }}">
+    <div class="filter-bar">
+
+      <div class="form-group">
+        <label class="form-label">Tech Stack</label>
+        <input
+          type="text"
+          name="tech_stack"
+          class="form-input"
+          placeholder="e.g. Python, Flask..."
+          value="{{ tech_filter }}"
+        />
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Innovation Level</label>
+        <select name="innovation_level" class="form-input form-select">
+          <option value="">All Levels</option>
+          <option value="low"    {% if innovation_filter == 'low' %}selected{% endif %}>Low</option>
+          <option value="medium" {% if innovation_filter == 'medium' %}selected{% endif %}>Medium</option>
+          <option value="high"   {% if innovation_filter == 'high' %}selected{% endif %}>High</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Status</label>
+        <select name="status" class="form-input form-select">
+          <option value="">All Status</option>
+          <option value="pending"  {% if status_filter == 'pending' %}selected{% endif %}>Pending</option>
+          <option value="reviewed" {% if status_filter == 'reviewed' %}selected{% endif %}>Reviewed</option>
+        </select>
+      </div>
+
+      <div class="form-group" style="justify-content: flex-end;">
+        <button type="submit" class="btn btn-primary">Apply Filters</button>
+      </div>
+      <div class="form-group" style="justify-content: flex-end;">
+        <a href="{{ url_for('teacher.project_list') }}" class="btn btn-outline">Clear</a>
+      </div>
+
+    </div>
+  </form>
+
+  
