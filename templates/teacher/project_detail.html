@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}{{ project.title }} – FnB{% endblock %}
+
+{% block content %}
+<div class="page-wrapper">
+
+  <!-- Breadcrumb -->
+  <div class="d-flex align-center gap-1 mb-2" style="font-size: 0.88rem; color: var(--text-muted);">
+    <a href="{{ url_for('teacher.project_list') }}" class="link">All Projects</a>
+    <span>›</span>
+    <span>{{ project.title }}</span>
+  </div>
+
+  <!-- Project Detail Card -->
+  <div class="page-card mb-2">
+    <div class="d-flex justify-between align-center mb-1">
+      <h2 class="page-title">📁 {{ project.title }}</h2>
+      <span class="badge badge-{{ project.status }}" style="font-size:0.9rem; padding: 6px 16px;">
+        {{ project.status | capitalize }}
+      </span>
+    </div>
+
+    <!-- Student Info -->
+    <div class="proj-card-meta mb-2">
+      <span>👤 Student: <strong>{{ student.username if student else 'Unknown' }}</strong></span>
+      <span>📧 {{ student.email if student else 'N/A' }}</span>
+      <span>📅 Submitted: {{ project.submitted_at.strftime('%d %b %Y, %I:%M %p') if project.submitted_at else 'N/A' }}</span>
+    </div>
+
+    <hr style="border: none; border-top: 1px solid var(--border); margin: 1rem 0;" />
+
+    
