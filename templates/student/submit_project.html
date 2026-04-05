@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+<!--
+  FnB - Student Project Submission Page
+  Author: Hitesh
+  SRS Reference: Section 4.2.1 - Project Submission
+  REQ-4.2.1: Students submit projects online (upload files + metadata)
+  D-SQ-02: fill & upload file → POST /submit → validateInput()
+  D-SEC-08: File type restriction shown in hint
+-->
+
+{% block title %}Submit Project – FnB{% endblock %}
+
+{% block content %}
+<div class="page-wrapper">
+  <div class="page-card" style="max-width: 680px; margin: 0 auto;">
+
+    <div class="page-header">
+      <h2 class="page-title">📤 Submit Project</h2>
+      <p class="page-subtitle">Fill in your project details. All starred fields are required.</p>
+    </div>
+
+    <form method="POST"
+          action="{{ url_for('student.submit_project') }}"
+          enctype="multipart/form-data"
+          class="auth-form">
+
+      <!-- Project Title -->
+      <div class="form-group">
+        <label for="title" class="form-label">Project Title <span class="required">*</span></label>
+        <input
+          type="text"
+          id="title"
+          name="title"
+          class="form-input"
+          placeholder="e.g. Smart Traffic Management System"
+          required
+          maxlength="100"
+        />
+      </div>
+
+      <!-- Description -->
+      <div class="form-group">
+        <label for="description" class="form-label">Project Description <span class="required">*</span></label>
+        <textarea
+          id="description"
+          name="description"
+          class="form-input"
+          placeholder="Describe what your project does, its goals, and how it works..."
+          required
+          rows="4"
+          maxlength="2000"
+        ></textarea>
+      </div>
+
+      <!-- Technology Stack -->
+      <div class="form-group">
+        <label for="tech_stack" class="form-label">Technology Stack <span class="required">*</span></label>
+        <input
+          type="text"
+          id="tech_stack"
+          name="tech_stack"
+          class="form-input"
+          placeholder="e.g. Python, Flask, MongoDB, HTML, CSS"
+          required
+          maxlength="200"
+        />
+        <span class="form-hint">List the main technologies, languages, and frameworks used.</span>
+      </div>
+
+      <!-- USP -->
+      <div class="form-group">
+        <label for="usp" class="form-label">Unique Selling Proposition (USP)</label>
+        <input
+          type="text"
+          id="usp"
+          name="usp"
+          class="form-input"
+          placeholder="What makes your project unique or special?"
+          maxlength="300"
+        />
+        <span class="form-hint">Optional – helps teacher understand your project's innovation.</span>
+      </div>
+
+      <!-- Innovation Level -->
+      <div class="form-group">
+        <label for="innovation_level" class="form-label">Innovation Level <span class="required">*</span></label>
+        <select id="innovation_level" name="innovation_level" class="form-input form-select" required>
+          <option value="low">Low – Basic / Standard implementation</option>
+          <option value="medium" selected>Medium – Some novel elements</option>
+          <option value="high">High – Highly innovative / Original idea</option>
+        </select>
+      </div>
+
+      <!-- File Upload -->
+      <div class="form-group">
+        <label for="project_file" class="form-label">Upload Project File</label>
+        <input
+          type="file"
+          id="project_file"
+          name="project_file"
+          class="form-input"
+          accept=".pdf,.zip,.png,.jpg,.txt,.py,.html,.docx"
+          style="cursor: pointer;"
+        />
+        <span class="form-hint">
+          Allowed: pdf, zip, png, jpg, txt, py, html, docx. Max size: 16 MB.
+          File stored securely on the server (D-SEC-08).
+        </span>
+      </div>
+
+      <div class="d-flex gap-1 mt-2">
+        <button type="submit" class="btn btn-primary" style="flex:1;">Submit Project</button>
+        <a href="{{ url_for('student.dashboard') }}" class="btn btn-outline" style="flex:0.4;">Cancel</a>
+      </div>
+
+    </form>
+  </div>
+</div>
+{% endblock %}
