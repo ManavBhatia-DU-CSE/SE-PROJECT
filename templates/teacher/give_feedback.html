@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+
+{% block title %}{% if existing_feedback %}Edit Feedback{% else %}Give Feedback{% endif %} – FnB{% endblock %}
+
+{% block content %}
+<div class="page-wrapper">
+  <div class="page-card" style="max-width: 680px; margin: 0 auto;">
+
+    <!-- Header -->
+    <div class="d-flex justify-between align-center mb-2">
+      <div>
+        <h2 class="page-title">
+          {% if existing_feedback %}✏️ Edit Feedback{% else %}💬 Give Feedback{% endif %}
+        </h2>
+        <p class="page-subtitle">Project: <strong>{{ project.title }}</strong></p>
+      </div>
+      <a href="{{ url_for('teacher.project_detail', project_id=project._id) }}" class="btn btn-outline">← Back</a>
+    </div>
+
+    <!-- Project Summary -->
+    <div style="background: var(--bg); border-radius: var(--radius-sm); padding: 12px 16px; margin-bottom: 1.5rem;">
+      <div class="proj-card-meta">
+        <span>🛠 {{ project.tech_stack }}</span>
+        <span>💡 {{ project.innovation_level | capitalize }}</span>
+        {% if project.usp %}<span>🎯 {{ project.usp }}</span>{% endif %}
+      </div>
+    </div>
+
+    <!-- Feedback Form -->
+    <form method="POST" action="{{ url_for('teacher.give_feedback', project_id=project._id) }}" class="auth-form">
+
+      <!-- Remarks (Required) -->
+      <div class="form-group">
+        <label for="remarks" class="form-label">Remarks <span class="required">*</span></label>
+        <textarea
+          id="remarks"
+          name="remarks"
+          class="form-input"
+          placeholder="Write your overall evaluation remarks about this project..."
+          required
+          rows="4"
+          maxlength="2000"
+        >{{ existing_feedback.remarks if existing_feedback else '' }}</textarea>
+        <span class="form-hint">Required. Your general evaluation of the project.</span>
+      </div>
+
+      
