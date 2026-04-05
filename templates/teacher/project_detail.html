@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+
+{% block title %}{{ project.title }} – FnB{% endblock %}
+
+{% block content %}
+<div class="page-wrapper">
+
+  <!-- Breadcrumb -->
+  <div class="d-flex align-center gap-1 mb-2" style="font-size: 0.88rem; color: var(--text-muted);">
+    <a href="{{ url_for('teacher.project_list') }}" class="link">All Projects</a>
+    <span>›</span>
+    <span>{{ project.title }}</span>
+  </div>
+
+  <!-- Project Detail Card -->
+  <div class="page-card mb-2">
+    <div class="d-flex justify-between align-center mb-1">
+      <h2 class="page-title">📁 {{ project.title }}</h2>
+      <span class="badge badge-{{ project.status }}" style="font-size:0.9rem; padding: 6px 16px;">
+        {{ project.status | capitalize }}
+      </span>
+    </div>
+
+    <!-- Student Info -->
+    <div class="proj-card-meta mb-2">
+      <span>👤 Student: <strong>{{ student.username if student else 'Unknown' }}</strong></span>
+      <span>📧 {{ student.email if student else 'N/A' }}</span>
+      <span>📅 Submitted: {{ project.submitted_at.strftime('%d %b %Y, %I:%M %p') if project.submitted_at else 'N/A' }}</span>
+    </div>
+
+    <hr style="border: none; border-top: 1px solid var(--border); margin: 1rem 0;" />
+
+    <!-- Project Metadata Grid -->
+    <div class="detail-grid">
+      <div class="detail-item">
+        <div class="detail-label">🛠 Technology Stack</div>
+        <div class="detail-value">{{ project.tech_stack }}</div>
+      </div>
+      <div class="detail-item">
+        <div class="detail-label">💡 Innovation Level</div>
+        <div class="detail-value">{{ project.innovation_level | capitalize }}</div>
+      </div>
+      <div class="detail-item">
+        <div class="detail-label">🎯 USP</div>
+        <div class="detail-value">{{ project.usp if project.usp else '—' }}</div>
+      </div>
+      <div class="detail-item">
+        <div class="detail-label">⭐ Quality Rating</div>
+        <div class="detail-value">
+          {% if project.quality_rating %}
+            <span class="stars">{{ '★' * project.quality_rating }}{{ '☆' * (5 - project.quality_rating) }}</span>
+            ({{ project.quality_rating }}/5)
+          {% else %}
+            Not rated yet
+          {% endif %}
+        </div>
+      </div>
+      <div class="detail-item">
+        <div class="detail-label">📎 Project File</div>
+        <div class="detail-value">{{ project.file_path if project.file_path else 'No file uploaded' }}</div>
+      </div>
+    </div>
+
+    <!-- Description -->
+    <div class="feedback-section mt-2">
+      <h4>📄 Project Description</h4>
+      <p>{{ project.description }}</p>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="d-flex gap-1 mt-3">
+      <a href="{{ url_for('teacher.give_feedback', project_id=project._id) }}" class="btn btn-primary">
+        {% if existing_feedback %}✏️ Edit Feedback{% else %}💬 Give Feedback{% endif %}
+      </a>
+      <a href="{{ url_for('teacher.project_list') }}" class="btn btn-outline">← Back to List</a>
+    </div>
+  </div>
+
+  <!-- Existing Feedback (if any) -->
+  {% if existing_feedback %}
+  <div class="page-card">
+    <p class="section-title">💬 Current Feedback</p>
+
+    <div class="proj-card-meta mb-1">
+      <span>📅 Given on: {{ existing_feedback.created_at.strftime('%d %b %Y') if existing_feedback.created_at else 'N/A' }}</span>
+      {% if existing_feedback.updated_at %}
+        <span style="color: var(--warning);">✏️ Updated: {{ existing_feedback.updated_at.strftime('%d %b %Y') }}</span>
+      {% endif %}
+    </div>
+
+    <div class="feedback-section">
+      <h4>💬 Remarks</h4>
+      <p>{{ existing_feedback.remarks }}</p>
+    </div>
+    {% if existing_feedback.suggestions %}
+    <div class="feedback-section">
+      <h4>✅ Suggestions</h4>
+      <p>{{ existing_feedback.suggestions }}</p>
+    </div>
+    {% endif %}
+    {% if existing_feedback.improvement_notes %}
+    <div class="feedback-section">
+      <h4>🔧 Improvement Notes</h4>
+      <p>{{ existing_feedback.improvement_notes }}</p>
+    </div>
+    {% endif %}
+  </div>
+  {% endif %}
+
+</div>
+{% endblock %}
