@@ -60,3 +60,52 @@
         <div class="detail-value">{{ project.file_path if project.file_path else 'No file uploaded' }}</div>
       </div>
     </div>
+
+    <!-- Description -->
+    <div class="feedback-section mt-2">
+      <h4>📄 Project Description</h4>
+      <p>{{ project.description }}</p>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="d-flex gap-1 mt-3">
+      <a href="{{ url_for('teacher.give_feedback', project_id=project._id) }}" class="btn btn-primary">
+        {% if existing_feedback %}✏️ Edit Feedback{% else %}💬 Give Feedback{% endif %}
+      </a>
+      <a href="{{ url_for('teacher.project_list') }}" class="btn btn-outline">← Back to List</a>
+    </div>
+  </div>
+
+  <!-- Existing Feedback (if any) -->
+  {% if existing_feedback %}
+  <div class="page-card">
+    <p class="section-title">💬 Current Feedback</p>
+
+    <div class="proj-card-meta mb-1">
+      <span>📅 Given on: {{ existing_feedback.created_at.strftime('%d %b %Y') if existing_feedback.created_at else 'N/A' }}</span>
+      {% if existing_feedback.updated_at %}
+        <span style="color: var(--warning);">✏️ Updated: {{ existing_feedback.updated_at.strftime('%d %b %Y') }}</span>
+      {% endif %}
+    </div>
+
+    <div class="feedback-section">
+      <h4>💬 Remarks</h4>
+      <p>{{ existing_feedback.remarks }}</p>
+    </div>
+    {% if existing_feedback.suggestions %}
+    <div class="feedback-section">
+      <h4>✅ Suggestions</h4>
+      <p>{{ existing_feedback.suggestions }}</p>
+    </div>
+    {% endif %}
+    {% if existing_feedback.improvement_notes %}
+    <div class="feedback-section">
+      <h4>🔧 Improvement Notes</h4>
+      <p>{{ existing_feedback.improvement_notes }}</p>
+    </div>
+    {% endif %}
+  </div>
+  {% endif %}
+
+</div>
+{% endblock %}
