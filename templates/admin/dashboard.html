@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard – FnB{% endblock %}
+
+{% block content %}
+<div class="page-wrapper">
+
+  <!-- Header -->
+  <div class="d-flex justify-between align-center mb-2">
+    <div>
+      <h2 class="page-title">🛡️ Admin Dashboard</h2>
+      <p class="text-muted">Welcome, <strong>{{ username }}</strong>! Full system oversight and user management.</p>
+    </div>
+    <a href="{{ url_for('admin.manage_users') }}" class="btn btn-primary">Manage Users</a>
+  </div>
+
+  <!-- System Stats Grid -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-number">{{ total_users }}</div>
+      <div class="stat-label">Total Users</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number" style="color: var(--student-color);">{{ total_students }}</div>
+      <div class="stat-label">Students</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number" style="color: var(--teacher-color);">{{ total_teachers }}</div>
+      <div class="stat-label">Teachers</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number" style="color: var(--primary);">{{ total_projects }}</div>
+      <div class="stat-label">Projects</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number" style="color: var(--success);">{{ total_feedback }}</div>
+      <div class="stat-label">Feedback Given</div>
+    </div>
+  </div>
+
+  <!-- Quick Actions -->
+  <div class="page-card mt-2">
+    <p class="section-title">Admin Actions</p>
+    <div class="d-flex gap-1" style="flex-wrap: wrap;">
+      <a href="{{ url_for('admin.manage_users') }}" class="btn btn-primary">👥 All Users</a>
+      <a href="{{ url_for('admin.manage_users') }}?role=student" class="btn btn-outline">🎓 Students</a>
+      <a href="{{ url_for('admin.manage_users') }}?role=teacher" class="btn btn-outline">🧑‍🏫 Teachers</a>
+    </div>
+  </div>
+
+  <!-- System Info -->
+  <div class="page-card mt-2">
+    <p class="section-title">System Information</p>
+    <div class="detail-grid">
+      <div class="detail-item">
+        <div class="detail-label">Platform</div>
+        <div class="detail-value">FnB – Fetch and Build v2.0</div>
+      </div>
+      <div class="detail-item">
+        <div class="detail-label">Architecture</div>
+        <div class="detail-value">Three-Tier (Flask + MongoDB)</div>
+      </div>
+      <div class="detail-item">
+        <div class="detail-label">Backend</div>
+        <div class="detail-value">Flask (Python)</div>
+      </div>
+      <div class="detail-item">
+        <div class="detail-label">Database</div>
+        <div class="detail-value">MongoDB (3 collections)</div>
+      </div>
+      <div class="detail-item">
+        <div class="detail-label">Security</div>
+        <div class="detail-value">RBAC + bcrypt + Flask sessions</div>
+      </div>
+      <div class="detail-item">
+        <div class="detail-label">SRS Version</div>
+        <div class="detail-value">IEEE 830-1998, v2.0</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}
