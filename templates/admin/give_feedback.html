@@ -7,7 +7,7 @@
 <div class="page-wrapper">
   <div class="page-card" style="max-width: 680px; margin: 0 auto;">
 
-    <!-- Header -->
+    <!-- Header section -->
     <div class="d-flex justify-between align-center mb-2">
       <div>
         <h2 class="page-title">
@@ -18,7 +18,7 @@
       <a href="{{ url_for('teacher.project_detail', project_id=project._id) }}" class="btn btn-outline">← Back</a>
     </div>
 
-    <!-- Project Summary -->
+    <!-- Project Summary card -->
     <div style="background: var(--bg); border-radius: var(--radius-sm); padding: 12px 16px; margin-bottom: 1.5rem;">
       <div class="proj-card-meta">
         <span>🛠 {{ project.tech_stack }}</span>
@@ -30,7 +30,7 @@
     <!-- Feedback Form -->
     <form method="POST" action="{{ url_for('teacher.give_feedback', project_id=project._id) }}" class="auth-form">
 
-      <!-- Remarks (Required) -->
+      <!-- Remarks (Required) field -->
       <div class="form-group">
         <label for="remarks" class="form-label">Remarks <span class="required">*</span></label>
         <textarea
@@ -45,7 +45,7 @@
         <span class="form-hint">Required. Your general evaluation of the project.</span>
       </div>
 
-      <!-- Suggestions -->
+      <!-- Suggestions (Optional field) -->
       <div class="form-group">
         <label for="suggestions" class="form-label">Suggestions</label>
         <textarea
@@ -58,7 +58,7 @@
         >{{ existing_feedback.suggestions if existing_feedback else '' }}</textarea>
       </div>
 
-      <!-- Improvement Notes -->
+       <!-- Improvement Notes (Optional field) -->
       <div class="form-group">
         <label for="improvement_notes" class="form-label">Improvement Notes</label>
         <textarea
@@ -71,7 +71,7 @@
         >{{ existing_feedback.improvement_notes if existing_feedback else '' }}</textarea>
       </div>
 
-      <!-- Quality Rating -->
+       <!-- Quality Rating Dropdown -->
       <div class="form-group">
         <label for="quality_rating" class="form-label">Quality Rating (1–5)</label>
         <select id="quality_rating" name="quality_rating" class="form-input form-select">
@@ -91,7 +91,7 @@
         </select>
         <span class="form-hint">Optional. Sets the project's quality rating visible to the student.</span>
       </div>
-
+<!-- Submit and Cancel Buttons -->
       <div class="d-flex gap-1 mt-2">
         <button type="submit" class="btn btn-success" style="flex:1;">
           {% if existing_feedback %}Update Feedback{% else %}Submit Feedback{% endif %}

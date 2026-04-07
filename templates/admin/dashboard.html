@@ -1,20 +1,26 @@
 {% extends "base.html" %}
 
-{% block title %}Admin Dashboard – FnB{% endblock %}
+{% block title %}
+    {# Page title for the Admin Dashboard #}
+    Admin Dashboard – FnB
+{% endblock %}
 
 {% block content %}
 <div class="page-wrapper">
 
-  <!-- Header -->
+  <!-- Header Section -->
   <div class="d-flex justify-between align-center mb-2">
     <div>
       <h2 class="page-title">🛡️ Admin Dashboard</h2>
+      {# Personalized welcome message showing logged-in admin username #}
       <p class="text-muted">Welcome, <strong>{{ username }}</strong>! Full system oversight and user management.</p>
     </div>
+    {# Quick access button to manage users #}
     <a href="{{ url_for('admin.manage_users') }}" class="btn btn-primary">Manage Users</a>
   </div>
 
   <!-- System Stats Grid -->
+  {# Displays key statistics about users, projects, and feedback #}
   <div class="stats-grid">
     <div class="stat-card">
       <div class="stat-number">{{ total_users }}</div>
@@ -38,7 +44,8 @@
     </div>
   </div>
 
-  <!-- Quick Actions -->
+  <!-- Quick Actions Section -->
+  {# Provides shortcuts for admins to filter and manage users by role #}
   <div class="page-card mt-2">
     <p class="section-title">Admin Actions</p>
     <div class="d-flex gap-1" style="flex-wrap: wrap;">
@@ -48,7 +55,8 @@
     </div>
   </div>
 
-  <!-- System Info -->
+  <!-- System Information Section -->
+  {# Displays technical details about the platform for transparency #}
   <div class="page-card mt-2">
     <p class="section-title">System Information</p>
     <div class="detail-grid">
