@@ -45,4 +45,61 @@
         <span class="form-hint">Required. Your general evaluation of the project.</span>
       </div>
 
-      
+      <!-- Suggestions -->
+      <div class="form-group">
+        <label for="suggestions" class="form-label">Suggestions</label>
+        <textarea
+          id="suggestions"
+          name="suggestions"
+          class="form-input"
+          placeholder="What should the student focus on improving?"
+          rows="3"
+          maxlength="1000"
+        >{{ existing_feedback.suggestions if existing_feedback else '' }}</textarea>
+      </div>
+
+      <!-- Improvement Notes -->
+      <div class="form-group">
+        <label for="improvement_notes" class="form-label">Improvement Notes</label>
+        <textarea
+          id="improvement_notes"
+          name="improvement_notes"
+          class="form-input"
+          placeholder="Detailed guidance for the student to improve their project..."
+          rows="3"
+          maxlength="1000"
+        >{{ existing_feedback.improvement_notes if existing_feedback else '' }}</textarea>
+      </div>
+
+      <!-- Quality Rating -->
+      <div class="form-group">
+        <label for="quality_rating" class="form-label">Quality Rating (1–5)</label>
+        <select id="quality_rating" name="quality_rating" class="form-input form-select">
+          <option value="">— Select Rating —</option>
+          {% for i in range(1, 6) %}
+            <option value="{{ i }}"
+              {% if project.quality_rating and project.quality_rating == i %}selected{% endif %}>
+              {{ '★' * i }}{{ '☆' * (5 - i) }} – {{ i }}/5
+              {% if i == 1 %}(Needs Major Work)
+              {% elif i == 2 %}(Below Average)
+              {% elif i == 3 %}(Average)
+              {% elif i == 4 %}(Good)
+              {% elif i == 5 %}(Excellent)
+              {% endif %}
+            </option>
+          {% endfor %}
+        </select>
+        <span class="form-hint">Optional. Sets the project's quality rating visible to the student.</span>
+      </div>
+
+      <div class="d-flex gap-1 mt-2">
+        <button type="submit" class="btn btn-success" style="flex:1;">
+          {% if existing_feedback %}Update Feedback{% else %}Submit Feedback{% endif %}
+        </button>
+        <a href="{{ url_for('teacher.project_detail', project_id=project._id) }}" class="btn btn-outline" style="flex:0.4;">Cancel</a>
+      </div>
+
+    </form>
+  </div>
+</div>
+{% endblock %}
