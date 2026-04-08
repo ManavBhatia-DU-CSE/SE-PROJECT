@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+<!--
+  FnB - Student My Feedback Page
+  Author: Hitesh
+  SRS Reference: Section 4.3 - Feedback Management
+  REQ-4.2.6, REQ-4.3.2: Student sees ONLY their own feedback
+  D-SQ-04: enforceRole(Student) → getForStudent(session.user_id)
+  D-SEC-07: Data isolation enforced in FeedbackModel.get_for_student()
+-->
+
+{% block title %}My Feedback – FnB{% endblock %}
+
+{% block content %}
+<div class="page-wrapper">
+
+  <div class="d-flex justify-between align-center mb-2">
+    <div>
+      <h2 class="page-title">📝 My Feedback</h2>
+      <p class="text-muted">Feedback provided by your teachers for your submitted projects.</p>
+    </div>
+    <a href="{{ url_for('student.dashboard') }}" class="btn btn-outline">← Back to Dashboard</a>
+  </div>
+
+  {% if feedbacks %}
+    {% for fb in feedbacks %}
+    <div class="feedback-card">
+
+      <!-- Header -->
+      <div class="d-flex justify-between align-center mb-1">
+        <div class="feedback-card-title">
+          📁 {{ fb.project.title if fb.project else 'Project' }}
+        </div>
+        <span class="badge badge-reviewed">Reviewed</span>
+      </div>
+
+      <!-- Meta info -->
+      <div class="proj-card-meta mb-1">
+        <span>👨‍🏫 Teacher: <strong>{{ fb.teacher.username if fb.teacher else 'N/A' }}</strong></span>
+        <span>📅 {{ fb.created_at.strftime('%d %b %Y, %I:%M %p') if fb.created_at else 'N/A' }}</span>
+        {% if fb.updated_at %}
+          <span style="color: var(--warning);">✏️ Updated: {{ fb.updated_at.strftime('%d %b %Y') }}</span>
+        {% endif %}
+      </div>
+
+      <!-- Tech stack info from project -->
+      {% if fb.project %}
+      <div class="proj-card-meta mb-1">
+        <span>🛠 {{ fb.project.tech_stack }}</span>
+        <span>💡 Innovation: {{ fb.project.innovation_level | capitalize }}</span>
+        {% if fb.project.quality_rating %}
+          <span>⭐ Quality: {{ fb.project.quality_rating }}/5</span>
+        {% endif %}
+      </div>
+      {% endif %}
+
+      <hr style="border: none; border-top: 1px solid var(--border); margin: 1rem 0;" />
+
+      <!-- Remarks -->
+      <div class="feedback-section">
+        <h4>💬 Remarks</h4>
+        <p>{{ fb.remarks }}</p>
+      </div>
+
+      <!-- Suggestions -->
+      {% if fb.suggestions %}
+      <div class="feedback-section">
+        <h4>✅ Suggestions</h4>
+        <p>{{ fb.suggestions }}</p>
+      </div>
+      {% endif %}
+
+      <!-- Improvement Notes -->
+      {% if fb.improvement_notes %}
+      <div class="feedback-section">
+        <h4>🔧 Improvement Notes</h4>
+        <p>{{ fb.improvement_notes }}</p>
+      </div>
+      {% endif %}
+
+    </div>
+    {% endfor %}
+
+  {% else %}
+    <div class="table-wrapper">
+      <div class="empty-state">
+        <div class="empty-state-icon">💬</div>
+        <h3>No feedback yet</h3>
+        <p>Your teacher hasn't reviewed your projects yet. Please check back later.</p>
+        <a href="{{ url_for('student.dashboard') }}" class="btn btn-primary">Back to Dashboard</a>
+      </div>
+    </div>
+  {% endif %}
+
+</div>
+{% endblock %}
