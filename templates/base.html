@@ -12,6 +12,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{% block title %}FnB - Fetch and Build{% endblock %}</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  <script>
+    if (localStorage.getItem('fnb-theme') === 'dark')
+      document.documentElement.setAttribute('data-theme', 'dark');
+  </script>
 </head>
 <body>
 
@@ -48,12 +52,14 @@
         {{ session.get('role', '').upper() }}
       </span>
       <span class="username-text">{{ session.get('username') }}</span>
+      <button class="theme-toggle" id="themeToggle" title="Toggle dark mode" aria-label="Toggle dark mode">🌙</button>
       <a href="{{ url_for('auth.logout') }}" class="btn btn-logout">Logout</a>
     </div>
     {% else %}
     <div class="nav-links">
       <a href="{{ url_for('auth.login') }}" class="nav-link">Login</a>
       <a href="{{ url_for('auth.register') }}" class="nav-link">Register</a>
+      <button class="theme-toggle" id="themeToggle" title="Toggle dark mode" aria-label="Toggle dark mode">🌙</button>
     </div>
     {% endif %}
   </nav>
@@ -87,6 +93,27 @@
     setTimeout(() => {
       document.querySelectorAll('.flash').forEach(el => el.remove());
     }, 4000);
+
+    (function() {
+      var toggle = document.getElementById('themeToggle');
+      var saved = localStorage.getItem('fnb-theme');
+      if (saved === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        toggle.textContent = '☀️';
+      }
+      toggle.addEventListener('click', function() {
+        var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        if (isDark) {
+          document.documentElement.removeAttribute('data-theme');
+          localStorage.setItem('fnb-theme', 'light');
+          toggle.textContent = '🌙';
+        } else {
+          document.documentElement.setAttribute('data-theme', 'dark');
+          localStorage.setItem('fnb-theme', 'dark');
+          toggle.textContent = '☀️';
+        }
+      });
+    })();
   </script>
 
 </body>

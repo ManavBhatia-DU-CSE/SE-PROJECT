@@ -30,6 +30,62 @@
   --radius-sm:    6px;
 }
 
+/* ── Dark Theme ─────────────────────────────────────────────────────── */
+[data-theme="dark"] {
+  --primary:      #3b82f6;
+  --primary-dark: #2563eb;
+  --primary-light:#1e3a5f;
+  --success:      #22c55e;
+  --success-light:#14532d;
+  --warning:      #eab308;
+  --warning-light:#422006;
+  --danger:       #ef4444;
+  --danger-light: #450a0a;
+  --student-color:#a78bfa;
+  --teacher-color:#22d3ee;
+  --admin-color:  #fbbf24;
+  --bg:           #0f172a;
+  --surface:      #1e293b;
+  --border:       #334155;
+  --text:         #e2e8f0;
+  --text-muted:   #94a3b8;
+  --shadow:       0 2px 12px rgba(0,0,0,0.3);
+}
+
+[data-theme="dark"] .user-badge--student { background: #2e1065; color: var(--student-color); }
+[data-theme="dark"] .user-badge--teacher { background: #083344; color: var(--teacher-color); }
+[data-theme="dark"] .user-badge--admin   { background: #451a03; color: var(--admin-color); }
+[data-theme="dark"] .badge-student  { background: #2e1065; color: var(--student-color); }
+[data-theme="dark"] .badge-teacher  { background: #083344; color: var(--teacher-color); }
+[data-theme="dark"] .badge-admin    { background: #451a03; color: var(--admin-color); }
+
+[data-theme="dark"] .fnb-table thead th { background: #0f172a; }
+[data-theme="dark"] .fnb-table tbody tr:hover { background: #263148; }
+[data-theme="dark"] .form-input:focus { background: var(--surface); }
+[data-theme="dark"] .btn-logout { background: #450a0a; }
+
+/* ── Theme Toggle ───────────────────────────────────────────────────── */
+.theme-toggle {
+  background: none;
+  border: 2px solid var(--border);
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.15rem;
+  color: var(--text-muted);
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+  flex-shrink: 0;
+}
+.theme-toggle:hover {
+  background: var(--primary-light);
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
 /* ── Reset & Base ───────────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { font-size: 16px; }
