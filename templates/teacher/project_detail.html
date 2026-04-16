@@ -24,8 +24,8 @@
     <!-- Student Info -->
     <div class="proj-card-meta mb-2">
       <span>👤 Student: <strong>{{ student.username if student else 'Unknown' }}</strong></span>
-      <span>📧 {{ student.email if student else 'N/A' }}</span>
-      <span>📅 Submitted: {{ project.submitted_at.strftime('%d %b %Y, %I:%M %p') if project.submitted_at else 'N/A' }}</span>
+      <span>{{ student.email if student else 'N/A' }}</span>
+      <span>Submitted: {{ project.submitted_at.strftime('%d %b %Y, %I:%M %p') if project.submitted_at else 'N/A' }}</span>
     </div>
 
     <hr style="border: none; border-top: 1px solid var(--border); margin: 1rem 0;" />
@@ -37,11 +37,11 @@
         <div class="detail-value">{{ project.tech_stack }}</div>
       </div>
       <div class="detail-item">
-        <div class="detail-label">💡 Innovation Level</div>
+        <div class="detail-label"> Innovation Level</div>
         <div class="detail-value">{{ project.innovation_level | capitalize }}</div>
       </div>
       <div class="detail-item">
-        <div class="detail-label">🎯 USP</div>
+        <div class="detail-label"> USP</div>
         <div class="detail-value">{{ project.usp if project.usp else '—' }}</div>
       </div>
       <div class="detail-item">
@@ -57,7 +57,19 @@
       </div>
       <div class="detail-item">
         <div class="detail-label">📎 Project File</div>
-        <div class="detail-value">{{ project.file_path if project.file_path else 'No file uploaded' }}</div>
+        <div class="detail-value">
+          {% if project.file_path %}
+            <a href="{{ url_for('teacher.download_file', filename=project.file_path) }}"
+               class="btn btn-outline btn-sm" target="_blank">
+              📥 Open / Download File
+            </a>
+            <span class="text-muted" style="font-size:0.78rem; display:block; margin-top:4px;">
+              {{ project.file_path.split('_', 2)[-1] if '_' in project.file_path else project.file_path }}
+            </span>
+          {% else %}
+            <span class="text-muted">No file uploaded</span>
+          {% endif %}
+        </div>
       </div>
     </div>
 
@@ -82,7 +94,7 @@
     <p class="section-title">💬 Current Feedback</p>
 
     <div class="proj-card-meta mb-1">
-      <span>📅 Given on: {{ existing_feedback.created_at.strftime('%d %b %Y') if existing_feedback.created_at else 'N/A' }}</span>
+      <span> Given on: {{ existing_feedback.created_at.strftime('%d %b %Y') if existing_feedback.created_at else 'N/A' }}</span>
       {% if existing_feedback.updated_at %}
         <span style="color: var(--warning);">✏️ Updated: {{ existing_feedback.updated_at.strftime('%d %b %Y') }}</span>
       {% endif %}
@@ -94,7 +106,7 @@
     </div>
     {% if existing_feedback.suggestions %}
     <div class="feedback-section">
-      <h4>✅ Suggestions</h4>
+      <h4> Suggestions</h4>
       <p>{{ existing_feedback.suggestions }}</p>
     </div>
     {% endif %}

@@ -195,6 +195,10 @@ a:hover { text-decoration: underline; }
 .flash--success { background: var(--success-light); border-color: var(--success); color: #14532d; }
 .flash--error   { background: var(--danger-light);  border-color: var(--danger);  color: #7f1d1d; }
 .flash--info    { background: var(--primary-light); border-color: var(--primary); color: #1e3a8a; }
+/* Dark mode fix: hardcoded colors above become invisible on dark backgrounds */
+[data-theme="dark"] .flash--success { color: #86efac; }
+[data-theme="dark"] .flash--error   { color: #fca5a5; }
+[data-theme="dark"] .flash--info    { color: #93c5fd; }
 .flash-close { background: none; border: none; cursor: pointer; font-size: 1rem; opacity: 0.6; }
 .flash-close:hover { opacity: 1; }
 
