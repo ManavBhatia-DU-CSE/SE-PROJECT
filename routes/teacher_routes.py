@@ -10,8 +10,9 @@ D-CL-03: Feedback.save(), Feedback.update()
 """
 
 from flask import (Blueprint, render_template, request, redirect,
-                   url_for, session, flash)
+                   url_for, session, flash, send_from_directory, current_app)
 from datetime import datetime
+import os
 from routes.auth_routes import role_required
 from models.project_model import ProjectModel
 from models.feedback_model import FeedbackModel
@@ -96,6 +97,21 @@ def project_detail(project_id):
                            student=student,
                            existing_feedback=existing_feedback,
                            username=session.get('username'))
+
+
+# ─── Download Project File ───────────────────────────────────────────────────
+
+@teacher_bp.route('/download/<path:filename>')
+@role_required('teacher')
+def download_file(filename):
+    """
+    Serves uploaded project files to teachers for review.
+    REQ-4.2.3: Teacher views project details including submitted files.
+    D-SEC-08: Files served through Flask (not directly web-accessible).
+    Only teachers (authenticated + role_required) can access this route.
+    """
+    upload_folder = current_app.config['UPLOAD_FOLDER']
+    return send_from_directory(upload_folder, filename, as_attachment=False)
 
 
 # ─── Give / Update Feedback ───────────────────────────────────────────────────
