@@ -1,0 +1,1641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>FnB – User Manual</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --primary: #2563eb;
+    --primary-light: #dbeafe;
+    --primary-dark: #1e40af;
+    --student: #7c3aed;
+    --student-light: #ede9fe;
+    --teacher: #0891b2;
+    --teacher-light: #e0f2fe;
+    --admin: #b45309;
+    --admin-light: #fef3c7;
+    --success: #16a34a;
+    --success-light: #dcfce7;
+    --warning: #d97706;
+    --warning-light: #fef3c7;
+    --danger: #dc2626;
+    --danger-light: #fee2e2;
+    --gray-50: #f8fafc;
+    --gray-100: #f1f5f9;
+    --gray-200: #e2e8f0;
+    --gray-300: #cbd5e1;
+    --gray-400: #94a3b8;
+    --gray-500: #64748b;
+    --gray-700: #334155;
+    --gray-900: #0f172a;
+    --white: #ffffff;
+    --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 4px 16px rgba(0,0,0,0.06);
+    --shadow-lg: 0 8px 32px rgba(0,0,0,0.12);
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; font-size: 15px; }
+
+  body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background: var(--gray-50);
+    color: var(--gray-900);
+    display: flex;
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  /* ── SIDEBAR ─────────────────────────────────── */
+  .sidebar {
+    width: 280px;
+    min-width: 280px;
+    background: var(--white);
+    border-right: 1px solid var(--gray-200);
+    height: 100vh;
+    position: sticky;
+    top: 0;
+    overflow-y: auto;
+    padding: 0 0 2rem 0;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 2px 0 8px rgba(0,0,0,0.04);
+  }
+
+  .sidebar-brand {
+    padding: 1.5rem 1.5rem 1rem;
+    border-bottom: 1px solid var(--gray-100);
+    background: linear-gradient(135deg, #1e40af 0%, #2563eb 100%);
+    color: white;
+  }
+
+  .sidebar-brand .logo {
+    font-size: 2rem;
+    margin-bottom: 4px;
+  }
+
+  .sidebar-brand h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+  }
+
+  .sidebar-brand p {
+    font-size: 0.78rem;
+    opacity: 0.8;
+    margin-top: 2px;
+  }
+
+  .sidebar-brand .version-tag {
+    display: inline-block;
+    background: rgba(255,255,255,0.2);
+    border-radius: 20px;
+    padding: 2px 10px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    margin-top: 8px;
+  }
+
+  .sidebar nav { padding: 1rem 0; flex: 1; }
+
+  .nav-section-title {
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--gray-400);
+    padding: 0.75rem 1.5rem 0.3rem;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 1.5rem;
+    color: var(--gray-700);
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+    border-left: 3px solid transparent;
+    transition: all 0.15s;
+    cursor: pointer;
+  }
+
+  .nav-item:hover { background: var(--gray-50); color: var(--primary); border-left-color: var(--primary); }
+  .nav-item.active { background: var(--primary-light); color: var(--primary); border-left-color: var(--primary); font-weight: 600; }
+
+  .nav-item .icon { font-size: 1rem; width: 20px; text-align: center; }
+  .nav-item.role-student .icon { color: var(--student); }
+  .nav-item.role-teacher .icon { color: var(--teacher); }
+  .nav-item.role-admin .icon { color: var(--admin); }
+
+  .sidebar-footer {
+    padding: 1rem 1.5rem;
+    border-top: 1px solid var(--gray-100);
+    font-size: 0.75rem;
+    color: var(--gray-400);
+    text-align: center;
+  }
+
+  /* ── MAIN CONTENT ─────────────────────────────── */
+  .main { flex: 1; overflow-y: auto; }
+
+  /* ── COVER PAGE ─────────────────────────────── */
+  .cover {
+    background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 50%, #2563eb 100%);
+    color: white;
+    padding: 5rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cover::before {
+    content: '';
+    position: absolute;
+    top: -80px; right: -80px;
+    width: 400px; height: 400px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 50%;
+  }
+
+  .cover::after {
+    content: '';
+    position: absolute;
+    bottom: -60px; left: -40px;
+    width: 300px; height: 300px;
+    background: rgba(255,255,255,0.04);
+    border-radius: 50%;
+  }
+
+  .cover-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 20px;
+    padding: 4px 14px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+
+  .cover h1 {
+    font-size: 3rem;
+    font-weight: 800;
+    letter-spacing: -1px;
+    line-height: 1.1;
+    margin-bottom: 0.75rem;
+  }
+
+  .cover .subtitle {
+    font-size: 1.2rem;
+    opacity: 0.75;
+    margin-bottom: 2.5rem;
+    font-weight: 300;
+  }
+
+  .cover-roles {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .role-pill {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 30px;
+    padding: 8px 18px;
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+
+  .role-pill .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+  }
+
+  .dot-student { background: #a78bfa; }
+  .dot-teacher { background: #22d3ee; }
+  .dot-admin   { background: #fbbf24; }
+
+  /* ── CONTENT SECTIONS ─────────────────────────── */
+  .content { padding: 3rem 4rem; max-width: 900px; }
+
+  .section { margin-bottom: 4rem; }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid var(--gray-200);
+  }
+
+  .section-icon {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+  }
+
+  .icon-blue   { background: var(--primary-light); }
+  .icon-purple { background: var(--student-light); }
+  .icon-cyan   { background: var(--teacher-light); }
+  .icon-amber  { background: var(--admin-light); }
+  .icon-green  { background: var(--success-light); }
+
+  .section h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--gray-900);
+    letter-spacing: -0.3px;
+  }
+
+  h3 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--gray-900);
+    margin: 1.5rem 0 0.75rem;
+  }
+
+  h3:first-child { margin-top: 0; }
+
+  p { color: var(--gray-700); margin-bottom: 0.75rem; font-size: 0.95rem; }
+
+  /* ── ROLE BANNER ─────────────────────────────── */
+  .role-banner {
+    border-radius: var(--radius);
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    border: 1px solid;
+  }
+
+  .role-banner.student { background: var(--student-light); border-color: #c4b5fd; }
+  .role-banner.teacher { background: var(--teacher-light); border-color: #a5f3fc; }
+  .role-banner.admin   { background: var(--admin-light); border-color: #fde68a; }
+
+  .role-banner .rb-icon { font-size: 1.8rem; }
+  .role-banner h3 { margin: 0 0 2px; font-size: 1rem; font-weight: 700; }
+  .role-banner p  { margin: 0; font-size: 0.85rem; color: var(--gray-500); }
+
+  .role-banner.student h3 { color: var(--student); }
+  .role-banner.teacher h3 { color: var(--teacher); }
+  .role-banner.admin   h3 { color: var(--admin); }
+
+  /* ── STEPS ──────────────────────────────────── */
+  .steps { display: flex; flex-direction: column; gap: 0; }
+
+  .step {
+    display: flex;
+    gap: 1rem;
+    position: relative;
+  }
+
+  .step:not(:last-child)::before {
+    content: '';
+    position: absolute;
+    left: 17px;
+    top: 38px;
+    bottom: -4px;
+    width: 2px;
+    background: var(--gray-200);
+  }
+
+  .step-num {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--primary);
+    color: white;
+    font-size: 0.85rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    z-index: 1;
+  }
+
+  .step-body {
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-sm);
+    padding: 1rem 1.25rem;
+    margin-bottom: 12px;
+    flex: 1;
+    box-shadow: var(--shadow);
+  }
+
+  .step-body h4 {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--gray-900);
+    margin-bottom: 4px;
+  }
+
+  .step-body p { margin: 0; font-size: 0.875rem; color: var(--gray-500); }
+
+  .step-body .step-note {
+    margin-top: 8px;
+    padding: 8px 10px;
+    background: var(--gray-50);
+    border-radius: 6px;
+    font-size: 0.82rem;
+    color: var(--gray-500);
+    border-left: 3px solid var(--gray-300);
+  }
+
+  /* ── URL CHIP ─────────────────────────────────── */
+  .url-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--gray-900);
+    color: #93c5fd;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+    padding: 6px 14px;
+    border-radius: var(--radius-sm);
+    margin: 0.5rem 0;
+  }
+
+  .url-chip .method {
+    background: #16a34a;
+    color: white;
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: 700;
+  }
+
+  /* ── INFO / WARNING BOXES ─────────────────────── */
+  .callout {
+    border-radius: var(--radius-sm);
+    padding: 1rem 1.25rem;
+    margin: 1rem 0;
+    display: flex;
+    gap: 12px;
+    font-size: 0.9rem;
+    border: 1px solid;
+  }
+
+  .callout-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+  .callout-body p { margin: 0; }
+  .callout-body strong { display: block; font-size: 0.88rem; margin-bottom: 3px; }
+
+  .callout.info    { background: #eff6ff; border-color: #bfdbfe; color: #1e40af; }
+  .callout.success { background: var(--success-light); border-color: #a7f3d0; color: #065f46; }
+  .callout.warning { background: #fffbeb; border-color: #fde68a; color: #92400e; }
+  .callout.tip     { background: var(--student-light); border-color: #c4b5fd; color: #4c1d95; }
+
+  /* ── FEATURE GRID ─────────────────────────────── */
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+
+  .feature-card {
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius);
+    padding: 1.25rem;
+    box-shadow: var(--shadow);
+  }
+
+  .feature-card .fc-icon { font-size: 1.5rem; margin-bottom: 0.5rem; }
+  .feature-card h4 { font-size: 0.9rem; font-weight: 700; color: var(--gray-900); margin-bottom: 4px; }
+  .feature-card p  { font-size: 0.82rem; color: var(--gray-500); margin: 0; }
+
+  /* ── FIELD TABLE ─────────────────────────────── */
+  .field-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+    font-size: 0.875rem;
+    background: var(--white);
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--gray-200);
+  }
+
+  .field-table th {
+    background: var(--gray-50);
+    padding: 10px 14px;
+    text-align: left;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--gray-500);
+    border-bottom: 1px solid var(--gray-200);
+  }
+
+  .field-table td {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--gray-100);
+    color: var(--gray-700);
+    vertical-align: top;
+  }
+
+  .field-table tr:last-child td { border-bottom: none; }
+  .field-table tr:hover td { background: var(--gray-50); }
+
+  .field-table .required { color: var(--danger); font-weight: 700; }
+  .field-table .optional { color: var(--gray-400); font-size: 0.78rem; }
+
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.72rem;
+    font-weight: 700;
+  }
+
+  .badge-required { background: var(--danger-light); color: var(--danger); }
+  .badge-optional { background: var(--gray-100); color: var(--gray-500); }
+  .badge-auto     { background: var(--primary-light); color: var(--primary); }
+
+  /* ── SCREEN MOCKUP ─────────────────────────────── */
+  .screen-mock {
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+    margin: 1.5rem 0;
+  }
+
+  .mock-bar {
+    background: var(--gray-900);
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .mock-dots { display: flex; gap: 6px; }
+  .mock-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .mock-dot:nth-child(1) { background: #ef4444; }
+  .mock-dot:nth-child(2) { background: #f59e0b; }
+  .mock-dot:nth-child(3) { background: #22c55e; }
+
+  .mock-url {
+    background: rgba(255,255,255,0.08);
+    border-radius: 6px;
+    padding: 4px 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: #94a3b8;
+    flex: 1;
+  }
+
+  .mock-body {
+    padding: 1.5rem;
+    background: var(--gray-50);
+  }
+
+  /* ── NAVBAR MOCKUP ─────────────────────────────── */
+  .nav-mock {
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius-sm);
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  }
+
+  .nav-mock-brand { font-weight: 800; color: var(--primary); font-size: 1rem; }
+
+  .nav-mock-links { display: flex; gap: 8px; }
+
+  .nav-mock-link {
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--gray-700);
+    background: var(--gray-100);
+  }
+
+  .nav-mock-link.active { background: var(--primary-light); color: var(--primary); }
+
+  .nav-mock-user { display: flex; align-items: center; gap: 8px; font-size: 0.8rem; }
+
+  .role-chip {
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.72rem;
+    font-weight: 700;
+  }
+
+  .rc-student { background: var(--student-light); color: var(--student); }
+  .rc-teacher { background: var(--teacher-light); color: var(--teacher); }
+  .rc-admin   { background: var(--admin-light); color: var(--admin); }
+
+  /* ── FORM MOCKUP ─────────────────────────────── */
+  .form-mock {
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    box-shadow: var(--shadow);
+  }
+
+  .form-mock-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 1rem; }
+
+  .fmg { margin-bottom: 12px; }
+  .fml { font-size: 0.78rem; font-weight: 600; color: var(--gray-700); margin-bottom: 4px; display: block; }
+  .fmi {
+    width: 100%;
+    border: 1.5px solid var(--gray-200);
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-size: 0.85rem;
+    color: var(--gray-500);
+    background: var(--gray-50);
+  }
+
+  .fmi.active { border-color: var(--primary); background: white; color: var(--gray-900); }
+  .fmbtn {
+    background: var(--primary);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    border: none;
+    cursor: default;
+    margin-top: 4px;
+  }
+
+  /* ── FLASH MOCKUP ─────────────────────────────── */
+  .flash-mock {
+    border-radius: var(--radius-sm);
+    padding: 10px 14px;
+    margin: 0.5rem 0;
+    font-size: 0.875rem;
+    font-weight: 500;
+    border-left: 4px solid;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .flash-success { background: var(--success-light); border-color: var(--success); color: #14532d; }
+  .flash-error   { background: var(--danger-light);  border-color: var(--danger);  color: #7f1d1d; }
+
+  /* ── TABLE OF CONTENTS ─────────────────────────── */
+  .toc {
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    box-shadow: var(--shadow);
+    margin: 1.5rem 0;
+  }
+
+  .toc h3 { margin: 0 0 1rem; font-size: 1rem; }
+  .toc-list { list-style: none; display: flex; flex-direction: column; gap: 6px; }
+  .toc-list li a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--gray-700);
+    text-decoration: none;
+    font-size: 0.875rem;
+    padding: 4px 0;
+    transition: color 0.1s;
+  }
+  .toc-list li a:hover { color: var(--primary); }
+  .toc-list li a .toc-num {
+    background: var(--gray-100);
+    color: var(--gray-500);
+    width: 24px; height: 24px;
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.72rem;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  /* ── DIVIDER ─────────────────────────────── */
+  .divider { border: none; border-top: 1px solid var(--gray-200); margin: 2.5rem 0; }
+
+  /* ── QUICK REF ─────────────────────────────── */
+  .quick-ref {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+
+  .qr-card {
+    border-radius: var(--radius);
+    padding: 1.25rem;
+    border: 1px solid;
+  }
+
+  .qr-card.student { background: var(--student-light); border-color: #c4b5fd; }
+  .qr-card.teacher { background: var(--teacher-light); border-color: #a5f3fc; }
+  .qr-card.admin   { background: var(--admin-light); border-color: #fde68a; }
+
+  .qr-card h4 { font-size: 0.88rem; font-weight: 700; margin-bottom: 8px; }
+  .qr-card.student h4 { color: var(--student); }
+  .qr-card.teacher h4 { color: var(--teacher); }
+  .qr-card.admin   h4 { color: var(--admin); }
+
+  .qr-card ul { list-style: none; }
+  .qr-card li { font-size: 0.82rem; color: var(--gray-700); padding: 2px 0; }
+  .qr-card li::before { content: '→ '; color: var(--gray-400); }
+
+  /* ── PRINT ─────────────────────────────── */
+  @media print {
+    .sidebar { display: none; }
+    .main { overflow: visible; }
+    .content { padding: 1.5rem 2rem; }
+    .cover { padding: 2rem; }
+  }
+
+  /* ── RESPONSIVE ─────────────────────────────── */
+  @media (max-width: 768px) {
+    .sidebar { display: none; }
+    .content { padding: 1.5rem; }
+    .cover   { padding: 2rem 1.5rem; }
+    .cover h1 { font-size: 2rem; }
+    .quick-ref { grid-template-columns: 1fr; }
+    .feature-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ─────────────────── SIDEBAR ─────────────────── -->
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <div class="logo">⚙</div>
+    <h2>FnB Manual</h2>
+    <p>Fetch &amp; Build Platform</p>
+    <span class="version-tag">Version 2.0</span>
+  </div>
+
+  <nav>
+    <div class="nav-section-title">Getting Started</div>
+    <a class="nav-item" href="#overview"><span class="icon">📖</span>Overview</a>
+    <a class="nav-item" href="#access"><span class="icon">🌐</span>Accessing FnB</a>
+    <a class="nav-item" href="#register"><span class="icon">✍️</span>Register &amp; Login</a>
+    <a class="nav-item" href="#navigation"><span class="icon">🗺️</span>Navigation</a>
+
+    <div class="nav-section-title">Student Guide</div>
+    <a class="nav-item role-student" href="#student-dashboard"><span class="icon">📊</span>Dashboard</a>
+    <a class="nav-item role-student" href="#submit"><span class="icon">📤</span>Submit a Project</a>
+    <a class="nav-item role-student" href="#view-feedback"><span class="icon">💬</span>View Feedback</a>
+
+    <div class="nav-section-title">Teacher Guide</div>
+    <a class="nav-item role-teacher" href="#teacher-dashboard"><span class="icon">📊</span>Dashboard</a>
+    <a class="nav-item role-teacher" href="#project-list"><span class="icon">📋</span>Browse Projects</a>
+    <a class="nav-item role-teacher" href="#filter"><span class="icon">🔍</span>Filter Projects</a>
+    <a class="nav-item role-teacher" href="#give-feedback"><span class="icon">✏️</span>Give Feedback</a>
+    <a class="nav-item role-teacher" href="#view-file"><span class="icon">📁</span>Open Student Files</a>
+
+    <div class="nav-section-title">Admin Guide</div>
+    <a class="nav-item role-admin" href="#admin-dashboard"><span class="icon">📊</span>Dashboard</a>
+    <a class="nav-item role-admin" href="#create-admin"><span class="icon">🔧</span>First-Time Setup</a>
+    <a class="nav-item role-admin" href="#manage-users"><span class="icon">👥</span>Manage Users</a>
+
+    <div class="nav-section-title">General</div>
+    <a class="nav-item" href="#change-password"><span class="icon">🔒</span>Change Password</a>
+    <a class="nav-item" href="#logout"><span class="icon">🚪</span>Logout</a>
+    <a class="nav-item" href="#faq"><span class="icon">❓</span>FAQ</a>
+    <a class="nav-item" href="#quick-ref"><span class="icon">⚡</span>Quick Reference</a>
+  </nav>
+
+  <div class="sidebar-footer">
+    FnB v2.0 &bull; IEEE 830-1998<br/>
+    Flask + MongoDB + HTML/CSS/JS
+  </div>
+</aside>
+
+<!-- ─────────────────── MAIN ─────────────────── -->
+<div class="main">
+
+  <!-- COVER -->
+  <div class="cover" id="top">
+    <div class="cover-badge">User Manual — Version 2.0</div>
+    <h1>FnB<br/>Fetch &amp; Build</h1>
+    <p class="subtitle">Student Project Review &amp; Feedback Platform</p>
+    <div class="cover-roles">
+      <div class="role-pill"><span class="dot dot-student"></span>Students</div>
+      <div class="role-pill"><span class="dot dot-teacher"></span>Teachers</div>
+      <div class="role-pill"><span class="dot dot-admin"></span>Administrators</div>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ──────── OVERVIEW ──────── -->
+    <div class="section" id="overview">
+      <div class="section-header">
+        <div class="section-icon icon-blue">📖</div>
+        <h2>1. What is FnB?</h2>
+      </div>
+      <p>
+        <strong>FnB (Fetch and Build)</strong> is a web-based platform that digitizes the student project evaluation process. Instead of scattered emails and handwritten notes, everything happens in one place — students submit projects, teachers review and give structured feedback, and administrators manage accounts.
+      </p>
+
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="fc-icon">📤</div>
+          <h4>Project Submission</h4>
+          <p>Students upload their work with metadata like tech stack, innovation level, and a project file.</p>
+        </div>
+        <div class="feature-card">
+          <div class="fc-icon">🔍</div>
+          <h4>Smart Filtering</h4>
+          <p>Teachers filter projects by technology, innovation, or review status to quickly find what they need.</p>
+        </div>
+        <div class="feature-card">
+          <div class="fc-icon">💬</div>
+          <h4>Structured Feedback</h4>
+          <p>Teachers write remarks, suggestions, and improvement notes — all stored and linked to the right student.</p>
+        </div>
+        <div class="feature-card">
+          <div class="fc-icon">🔒</div>
+          <h4>Secure &amp; Private</h4>
+          <p>Each student sees only their own feedback. Role-based access keeps every user in their lane.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ──────── ACCESS ──────── -->
+    <div class="section" id="access">
+      <div class="section-header">
+        <div class="section-icon icon-blue">🌐</div>
+        <h2>2. Accessing FnB</h2>
+      </div>
+      <p>FnB runs in a web browser. No installation needed. Open any modern browser (Google Chrome recommended) and go to:</p>
+
+      <div class="screen-mock">
+        <div class="mock-bar">
+          <div class="mock-dots"><div class="mock-dot"></div><div class="mock-dot"></div><div class="mock-dot"></div></div>
+          <div class="mock-url">http://localhost:5000</div>
+        </div>
+        <div class="mock-body">
+          <div class="flash-mock flash-success">⚙ FnB is running. You will be redirected to the Login page automatically.</div>
+        </div>
+      </div>
+
+      <div class="callout info">
+        <span class="callout-icon">ℹ️</span>
+        <div class="callout-body">
+          <strong>Default URL</strong>
+          The address <code>http://localhost:5000</code> is for running on your local computer. If your teacher has hosted it on a server, they will give you the actual web address to use.
+        </div>
+      </div>
+
+      <p>If you are not logged in, FnB automatically redirects you to the login page. If you are already logged in, it takes you straight to your role's dashboard.</p>
+    </div>
+
+    <!-- ──────── REGISTER & LOGIN ──────── -->
+    <div class="section" id="register">
+      <div class="section-header">
+        <div class="section-icon icon-blue">✍️</div>
+        <h2>3. Register &amp; Login</h2>
+      </div>
+
+      <h3>3.1 Creating a New Account</h3>
+      <p>If you don't have an account yet, you can register as a Student or Teacher.</p>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <h4>Go to the Register page</h4>
+            <p>Click <strong>Register here</strong> on the Login page, or navigate to <code>/register</code>.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <h4>Fill in your details</h4>
+            <p>Enter a unique username, your email address, a password (min. 6 characters), and select your role.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <h4>Click "Create Account"</h4>
+            <p>You will see a green success message and be redirected to Login.</p>
+            <div class="step-note">⚠️ Admin accounts cannot be created here — only the administrator can create admin accounts.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-mock" style="margin-top: 1.5rem;">
+        <div class="form-mock-title">Register – Create Account</div>
+        <div class="fmg"><label class="fml">Username *</label><div class="fmi active">e.g. shashi2026</div></div>
+        <div class="fmg"><label class="fml">Email *</label><div class="fmi">your@email.com</div></div>
+        <div class="fmg"><label class="fml">Password *</label><div class="fmi">Min. 6 characters</div></div>
+        <div class="fmg"><label class="fml">Register As *</label><div class="fmi">Student / Teacher</div></div>
+        <button class="fmbtn">Create Account</button>
+      </div>
+
+      <h3>3.2 Logging In</h3>
+      <p>Enter your username and password, then click <strong>Login</strong>. The system checks your role and redirects you to the right dashboard automatically.</p>
+
+      <div class="callout success">
+        <span class="callout-icon">✅</span>
+        <div class="callout-body">
+          <strong>After login</strong>
+          You'll see a green "Welcome back, [username]!" message at the top of the screen. This confirms your login was successful.
+        </div>
+      </div>
+
+      <div class="callout warning">
+        <span class="callout-icon">⚠️</span>
+        <div class="callout-body">
+          <strong>Login failed?</strong>
+          Check your username and password. If your account was disabled by the admin, contact them. Passwords are case-sensitive.
+        </div>
+      </div>
+    </div>
+
+    <!-- ──────── NAVIGATION ──────── -->
+    <div class="section" id="navigation">
+      <div class="section-header">
+        <div class="section-icon icon-blue">🗺️</div>
+        <h2>4. Navigation</h2>
+      </div>
+      <p>After logging in, the top navigation bar changes based on your role. You only see links relevant to you.</p>
+
+      <h3>Student Navigation Bar</h3>
+      <div class="nav-mock">
+        <div class="nav-mock-brand">⚙ FnB</div>
+        <div class="nav-mock-links">
+          <div class="nav-mock-link active">Dashboard</div>
+          <div class="nav-mock-link">Submit Project</div>
+          <div class="nav-mock-link">My Feedback</div>
+          <div class="nav-mock-link">Change Password</div>
+        </div>
+        <div class="nav-mock-user"><span class="role-chip rc-student">STUDENT</span> shashi &nbsp; <span style="color:#dc2626;font-size:0.8rem;">Logout</span></div>
+      </div>
+
+      <h3>Teacher Navigation Bar</h3>
+      <div class="nav-mock">
+        <div class="nav-mock-brand">⚙ FnB</div>
+        <div class="nav-mock-links">
+          <div class="nav-mock-link active">Dashboard</div>
+          <div class="nav-mock-link">View Projects</div>
+          <div class="nav-mock-link">Change Password</div>
+        </div>
+        <div class="nav-mock-user"><span class="role-chip rc-teacher">TEACHER</span> harsh_sir &nbsp; <span style="color:#dc2626;font-size:0.8rem;">Logout</span></div>
+      </div>
+
+      <h3>Admin Navigation Bar</h3>
+      <div class="nav-mock">
+        <div class="nav-mock-brand">⚙ FnB</div>
+        <div class="nav-mock-links">
+          <div class="nav-mock-link active">Dashboard</div>
+          <div class="nav-mock-link">Manage Users</div>
+          <div class="nav-mock-link">Change Password</div>
+        </div>
+        <div class="nav-mock-user"><span class="role-chip rc-admin">ADMIN</span> admin &nbsp; <span style="color:#dc2626;font-size:0.8rem;">Logout</span></div>
+      </div>
+    </div>
+
+    <hr class="divider"/>
+
+    <!-- ════════════ STUDENT SECTION ════════════ -->
+    <div class="section" id="student-dashboard">
+      <div class="role-banner student">
+        <span class="rb-icon">🎓</span>
+        <div>
+          <h3>Student Guide</h3>
+          <p>Everything a student needs to submit projects and read teacher feedback.</p>
+        </div>
+      </div>
+
+      <div class="section-header">
+        <div class="section-icon icon-purple">📊</div>
+        <h2>5. Student Dashboard</h2>
+      </div>
+      <p>Your dashboard is the first page you see after logging in. It shows a summary of all your submitted projects.</p>
+
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="fc-icon">📁</div>
+          <h4>Total Projects</h4>
+          <p>Total number of projects you have submitted so far.</p>
+        </div>
+        <div class="feature-card">
+          <div class="fc-icon">⏳</div>
+          <h4>Pending Review</h4>
+          <p>Projects awaiting teacher feedback — shown with an orange "Pending" badge.</p>
+        </div>
+        <div class="feature-card">
+          <div class="fc-icon">✅</div>
+          <h4>Reviewed</h4>
+          <p>Projects your teacher has already given feedback on — shown with a green "Reviewed" badge.</p>
+        </div>
+      </div>
+
+      <p>Each project card shows the title, tech stack, innovation level, quality rating (once given), submission date, and a <strong>View Feedback</strong> button (appears only after the teacher reviews it).</p>
+    </div>
+
+    <!-- SUBMIT PROJECT -->
+    <div class="section" id="submit">
+      <div class="section-header">
+        <div class="section-icon icon-purple">📤</div>
+        <h2>6. Submitting a Project</h2>
+      </div>
+      <p>Click <strong>Submit New Project</strong> on your dashboard or <strong>Submit Project</strong> in the nav bar.</p>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <h4>Enter Project Title</h4>
+            <p>Give your project a clear, descriptive name. E.g. "Smart Traffic Management System".</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <h4>Write a Description</h4>
+            <p>Explain what your project does, its goals, and how it works. This is what the teacher reads first.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <h4>Enter Tech Stack</h4>
+            <p>List the languages, frameworks, and tools you used. E.g. "Python, Flask, MongoDB, HTML, CSS".</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <h4>Fill in USP (optional)</h4>
+            <p>What makes your project unique? E.g. "Uses AI-based prediction to reduce waiting time by 40%".</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">5</div>
+          <div class="step-body">
+            <h4>Select Innovation Level</h4>
+            <p>Pick Low, Medium, or High based on how original your idea is compared to standard implementations.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">6</div>
+          <div class="step-body">
+            <h4>Upload a File (optional)</h4>
+            <p>Attach your project file — PDF report, ZIP of code, screenshots, etc.</p>
+            <div class="step-note">📎 Allowed file types: PDF, ZIP, PNG, JPG, TXT, PY, HTML, DOCX. Max size: 16 MB.</div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">7</div>
+          <div class="step-body">
+            <h4>Click "Submit Project"</h4>
+            <p>You'll see a green success message and be taken back to your dashboard with the new project listed as "Pending".</p>
+          </div>
+        </div>
+      </div>
+
+      <table class="field-table">
+        <thead><tr><th>Field</th><th>Required?</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Project Title</strong></td><td><span class="badge badge-required">Required</span></td><td>Short, clear name for your project (max 100 chars)</td></tr>
+          <tr><td><strong>Description</strong></td><td><span class="badge badge-required">Required</span></td><td>Full explanation of your project (max 2000 chars)</td></tr>
+          <tr><td><strong>Tech Stack</strong></td><td><span class="badge badge-required">Required</span></td><td>Technologies used, separated by commas</td></tr>
+          <tr><td><strong>USP</strong></td><td><span class="badge badge-optional">Optional</span></td><td>Unique selling point / what makes your project special</td></tr>
+          <tr><td><strong>Innovation Level</strong></td><td><span class="badge badge-required">Required</span></td><td>Low / Medium / High — defaults to Medium</td></tr>
+          <tr><td><strong>Project File</strong></td><td><span class="badge badge-optional">Optional</span></td><td>Attachment for teacher to download and review</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- VIEW FEEDBACK -->
+    <div class="section" id="view-feedback">
+      <div class="section-header">
+        <div class="section-icon icon-purple">💬</div>
+        <h2>7. Viewing Your Feedback</h2>
+      </div>
+      <p>Once your teacher reviews a project, you can read their feedback. There are two ways to access it:</p>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">A</div>
+          <div class="step-body">
+            <h4>From the Dashboard</h4>
+            <p>On any project card with a green "Reviewed" badge, click the <strong>View Feedback</strong> button.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">B</div>
+          <div class="step-body">
+            <h4>From the Nav Bar</h4>
+            <p>Click <strong>My Feedback</strong> in the navigation to see feedback for all your reviewed projects at once.</p>
+          </div>
+        </div>
+      </div>
+
+      <p>Each feedback card shows:</p>
+      <table class="field-table">
+        <thead><tr><th>Section</th><th>What it Means</th></tr></thead>
+        <tbody>
+          <tr><td>💬 <strong>Remarks</strong></td><td>General evaluation of your project from the teacher</td></tr>
+          <tr><td>✅ <strong>Suggestions</strong></td><td>Specific things to improve or add to your project</td></tr>
+          <tr><td>🔧 <strong>Improvement Notes</strong></td><td>Detailed guidance on how to make your project better</td></tr>
+          <tr><td>⭐ <strong>Quality Rating</strong></td><td>A score from 1 to 5 stars assigned by the teacher</td></tr>
+          <tr><td>📅 <strong>Date</strong></td><td>When feedback was given, and if it was updated later</td></tr>
+        </tbody>
+      </table>
+
+      <div class="callout tip">
+        <span class="callout-icon">💡</span>
+        <div class="callout-body">
+          <strong>Privacy guarantee</strong>
+          You can only ever see feedback for your own projects. You will never see another student's feedback, even if you try to access it directly.
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider"/>
+
+    <!-- ════════════ TEACHER SECTION ════════════ -->
+    <div class="section" id="teacher-dashboard">
+      <div class="role-banner teacher">
+        <span class="rb-icon">🧑‍🏫</span>
+        <div>
+          <h3>Teacher Guide</h3>
+          <p>How to browse, filter, review, and give feedback on student projects.</p>
+        </div>
+      </div>
+
+      <div class="section-header">
+        <div class="section-icon icon-cyan">📊</div>
+        <h2>8. Teacher Dashboard</h2>
+      </div>
+      <p>Your dashboard shows a system-wide summary — total projects, how many are pending, and how many have been reviewed.</p>
+      <p>Use the quick action buttons to jump directly to <strong>All Projects</strong>, <strong>Pending Projects</strong>, or <strong>Reviewed Projects</strong>.</p>
+    </div>
+
+    <!-- PROJECT LIST -->
+    <div class="section" id="project-list">
+      <div class="section-header">
+        <div class="section-icon icon-cyan">📋</div>
+        <h2>9. Browsing Projects</h2>
+      </div>
+      <p>Click <strong>View Projects</strong> in the nav bar to see the full list of all student submissions. The list shows:</p>
+
+      <table class="field-table">
+        <thead><tr><th>Column</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Project Title</strong></td><td>Name of the student's project</td></tr>
+          <tr><td><strong>Tech Stack</strong></td><td>Technologies the student used</td></tr>
+          <tr><td><strong>Innovation</strong></td><td>Low / Medium / High badge</td></tr>
+          <tr><td><strong>Quality</strong></td><td>Star rating (if already given)</td></tr>
+          <tr><td><strong>Status</strong></td><td>Pending (orange) or Reviewed (green)</td></tr>
+          <tr><td><strong>Submitted</strong></td><td>Date of submission</td></tr>
+          <tr><td><strong>Actions</strong></td><td>Details button + Give/Edit Feedback button</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- FILTER -->
+    <div class="section" id="filter">
+      <div class="section-header">
+        <div class="section-icon icon-cyan">🔍</div>
+        <h2>10. Filtering Projects</h2>
+      </div>
+      <p>Above the projects table, there is a filter bar. You can narrow down projects by:</p>
+
+      <div class="feature-grid">
+        <div class="feature-card">
+          <div class="fc-icon">🛠️</div>
+          <h4>Tech Stack</h4>
+          <p>Type any technology (e.g. "Flask" or "React") to find all projects using it. Partial matches work.</p>
+        </div>
+        <div class="feature-card">
+          <div class="fc-icon">💡</div>
+          <h4>Innovation Level</h4>
+          <p>Select Low, Medium, or High from the dropdown to filter by the student's self-reported innovation.</p>
+        </div>
+        <div class="feature-card">
+          <div class="fc-icon">📌</div>
+          <h4>Status</h4>
+          <p>Show only "Pending" (not yet reviewed) or "Reviewed" projects.</p>
+        </div>
+      </div>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <h4>Enter filter values in the bar</h4>
+            <p>Fill in one or more filter fields. You can combine them — e.g. "Python" + "High" shows all high-innovation Python projects.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <h4>Click "Apply Filters"</h4>
+            <p>The table updates to show only matching projects. The count at the top shows how many were found.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <h4>Click "Clear" to reset</h4>
+            <p>Removes all filters and shows the full list again.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- GIVE FEEDBACK -->
+    <div class="section" id="give-feedback">
+      <div class="section-header">
+        <div class="section-icon icon-cyan">✏️</div>
+        <h2>11. Giving Feedback</h2>
+      </div>
+      <p>Click <strong>Give Feedback</strong> next to any project. Fill in the form and submit.</p>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <h4>Click "Details" on a project</h4>
+            <p>This opens the full project page where you can read the description and see any uploaded file.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <h4>Click "Give Feedback"</h4>
+            <p>The feedback form opens. The project summary is shown at the top as a quick reminder.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <h4>Write Remarks (required)</h4>
+            <p>This is your overall evaluation. At least this field must be filled in before submitting.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <h4>Add Suggestions &amp; Improvement Notes (optional)</h4>
+            <p>Give specific advice on what to improve and detailed guidance notes for the student.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">5</div>
+          <div class="step-body">
+            <h4>Set a Quality Rating (optional)</h4>
+            <p>Choose 1–5 stars. This is visible to the student on their project card.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">6</div>
+          <div class="step-body">
+            <h4>Click "Submit Feedback"</h4>
+            <p>The feedback is saved, the project status changes to "Reviewed", and the student can now see it.</p>
+          </div>
+        </div>
+      </div>
+
+      <table class="field-table">
+        <thead><tr><th>Field</th><th>Required?</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Remarks</strong></td><td><span class="badge badge-required">Required</span></td><td>General evaluation of the project (max 2000 chars)</td></tr>
+          <tr><td><strong>Suggestions</strong></td><td><span class="badge badge-optional">Optional</span></td><td>Specific improvements the student should make</td></tr>
+          <tr><td><strong>Improvement Notes</strong></td><td><span class="badge badge-optional">Optional</span></td><td>Detailed step-by-step guidance for the student</td></tr>
+          <tr><td><strong>Quality Rating</strong></td><td><span class="badge badge-optional">Optional</span></td><td>1 (Needs Major Work) to 5 (Excellent)</td></tr>
+        </tbody>
+      </table>
+
+      <div class="callout info">
+        <span class="callout-icon">ℹ️</span>
+        <div class="callout-body">
+          <strong>Editing feedback</strong>
+          If you want to change feedback you already gave, go back to the project and click <strong>Edit Feedback</strong>. The form will be pre-filled with your previous comments. Your changes overwrite the old feedback and an "Updated" timestamp is shown.
+        </div>
+      </div>
+    </div>
+
+    <!-- VIEW FILE -->
+    <div class="section" id="view-file">
+      <div class="section-header">
+        <div class="section-icon icon-cyan">📁</div>
+        <h2>12. Opening a Student's File</h2>
+      </div>
+      <p>When a student uploads a file with their project, you can open or download it from the project detail page.</p>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <h4>Go to the Project Detail page</h4>
+            <p>Click <strong>Details</strong> next to any project in the list.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <h4>Find the "Project File" section</h4>
+            <p>In the metadata grid, look for the <strong>📎 Project File</strong> row.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <h4>Click "📥 Open / Download File"</h4>
+            <p>The file opens in a new browser tab. PDFs and images display directly; ZIP or code files download automatically.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout tip">
+        <span class="callout-icon">💡</span>
+        <div class="callout-body">
+          <strong>If no file was uploaded</strong>
+          The "Project File" row will show "No file uploaded". Some students may only provide a description without an attachment.
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider"/>
+
+    <!-- ════════════ ADMIN SECTION ════════════ -->
+    <div class="section" id="admin-dashboard">
+      <div class="role-banner admin">
+        <span class="rb-icon">🛡️</span>
+        <div>
+          <h3>Administrator Guide</h3>
+          <p>Managing users, roles, and system settings.</p>
+        </div>
+      </div>
+
+      <div class="section-header">
+        <div class="section-icon icon-amber">📊</div>
+        <h2>13. Admin Dashboard</h2>
+      </div>
+      <p>The admin dashboard shows a complete picture of the platform — total users broken down by students and teachers, total projects, and total feedback entries.</p>
+      <p>The <strong>System Information</strong> panel shows the tech stack and SRS version for reference.</p>
+    </div>
+
+    <!-- FIRST TIME SETUP -->
+    <div class="section" id="create-admin">
+      <div class="section-header">
+        <div class="section-icon icon-amber">🔧</div>
+        <h2>14. First-Time Setup (Creating the Admin Account)</h2>
+      </div>
+      <p>Admin accounts cannot be created through the normal Register page. The very first admin must be created manually by running a script once. After that, admins can create more admins from inside the app.</p>
+
+      <div class="callout warning">
+        <span class="callout-icon">⚠️</span>
+        <div class="callout-body">
+          <strong>One-time step only</strong>
+          This only needs to be done once, when the system is first set up. After the admin account exists, all future management happens inside FnB.
+        </div>
+      </div>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <h4>Make sure the app and MongoDB are running</h4>
+            <p>Start MongoDB (<code>mongod</code>) and run <code>python app.py</code> in the project folder.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <h4>Open a Python shell in the project folder</h4>
+            <p>In a new terminal window, type <code>python</code> and press Enter.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <h4>Run the seed script</h4>
+            <p>Copy and paste this code into the Python shell:</p>
+            <div class="step-note" style="font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; line-height: 1.8;">
+              from app import app<br/>
+              from db import mongo<br/>
+              import bcrypt<br/>
+              from datetime import datetime<br/>
+              <br/>
+              with app.app_context():<br/>
+              &nbsp;&nbsp;pw = bcrypt.hashpw(b'admin123', bcrypt.gensalt(rounds=10))<br/>
+              &nbsp;&nbsp;mongo.db.users.insert_one({<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;'username': 'admin',<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;'password_hash': pw,<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;'role': 'admin',<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;'email': 'admin@fnb.com',<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;'is_active': True,<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;'created_at': datetime.utcnow()<br/>
+              &nbsp;&nbsp;})<br/>
+              &nbsp;&nbsp;print("Admin created!")
+            </div>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <h4>Login with the new admin credentials</h4>
+            <p>Go to <code>http://localhost:5000/login</code> and use <strong>Username:</strong> admin &nbsp;|&nbsp; <strong>Password:</strong> admin123</p>
+            <div class="step-note">🔒 Change this password immediately after first login using "Change Password" in the nav bar.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MANAGE USERS -->
+    <div class="section" id="manage-users">
+      <div class="section-header">
+        <div class="section-icon icon-amber">👥</div>
+        <h2>15. Managing Users</h2>
+      </div>
+      <p>Go to <strong>Manage Users</strong> from the nav bar. This page has two parts:</p>
+
+      <h3>15.1 Create a New User</h3>
+      <p>The form at the top of the page lets you create any type of user directly without them needing to register themselves.</p>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <h4>Fill in username, email, password, and role</h4>
+            <p>Pick the role: Student, Teacher, or Admin. This is the only way to create admin accounts.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <h4>Click "Create User"</h4>
+            <p>The user appears immediately in the table below and can log in right away.</p>
+          </div>
+        </div>
+      </div>
+
+      <h3>15.2 User Management Table</h3>
+      <p>The table shows all registered users with their details. You can take two actions on each user:</p>
+
+      <table class="field-table">
+        <thead><tr><th>Action</th><th>How</th><th>Effect</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Change Role</strong></td>
+            <td>Select a new role from the dropdown and click <strong>Set</strong></td>
+            <td>The user's role updates immediately. They will have different permissions on their next login.</td>
+          </tr>
+          <tr>
+            <td><strong>Disable Account</strong></td>
+            <td>Click the red <strong>Disable</strong> button</td>
+            <td>The user can no longer log in. Their data is preserved. Click <strong>Enable</strong> to restore access.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="callout warning">
+        <span class="callout-icon">⚠️</span>
+        <div class="callout-body">
+          <strong>You cannot disable your own account</strong>
+          The system prevents admins from accidentally locking themselves out. The buttons are greyed out on your own row.
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider"/>
+
+    <!-- ════════════ GENERAL SECTION ════════════ -->
+    <div class="section" id="change-password">
+      <div class="section-header">
+        <div class="section-icon icon-green">🔒</div>
+        <h2>16. Changing Your Password</h2>
+      </div>
+      <p>Any user (student, teacher, or admin) can change their password after logging in.</p>
+
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-body">
+            <h4>Click "Change Password" in the nav bar</h4>
+            <p>This is visible in the nav bar for all roles when logged in.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-body">
+            <h4>Enter your current password</h4>
+            <p>This verifies it's really you making the change.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-body">
+            <h4>Enter and confirm your new password</h4>
+            <p>Must be at least 6 characters. Both fields must match exactly.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-body">
+            <h4>Click "Update Password"</h4>
+            <p>You'll see a success message. Use the new password next time you log in.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LOGOUT -->
+    <div class="section" id="logout">
+      <div class="section-header">
+        <div class="section-icon icon-green">🚪</div>
+        <h2>17. Logging Out</h2>
+      </div>
+      <p>Click the red <strong>Logout</strong> button in the top-right corner of the navigation bar. You can log out at any time from any page.</p>
+      <p>After logout, your session is completely cleared. You'll be redirected to the Login page with a confirmation message. Anyone who uses the same computer after you won't have access to your account.</p>
+
+      <div class="callout info">
+        <span class="callout-icon">ℹ️</span>
+        <div class="callout-body">
+          <strong>Always log out on shared computers</strong>
+          If you're using a shared or public computer, always click Logout when you're done to protect your account.
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider"/>
+
+    <!-- ════════════ FAQ ════════════ -->
+    <div class="section" id="faq">
+      <div class="section-header">
+        <div class="section-icon icon-blue">❓</div>
+        <h2>18. Frequently Asked Questions</h2>
+      </div>
+
+      <div style="display: flex; flex-direction: column; gap: 1rem;">
+
+        <div class="feature-card">
+          <h4>❓ I registered but can't log in — what's wrong?</h4>
+          <p>Check your username and password carefully (they are case-sensitive). If your account was recently created by an admin, confirm with them that it is enabled. If you keep failing, ask your admin to reset your password.</p>
+        </div>
+
+        <div class="feature-card">
+          <h4>❓ I submitted a project but I don't see it on my dashboard</h4>
+          <p>Refresh the page. If it still doesn't appear, check that you were logged in as a Student (not Teacher or Admin) when you submitted. Projects are tied to the account that was logged in at submission time.</p>
+        </div>
+
+        <div class="feature-card">
+          <h4>❓ My teacher gave feedback but I can't see it</h4>
+          <p>Go to <strong>My Feedback</strong> in the nav bar. If it's not there, the teacher may not have submitted feedback yet (the project status on your dashboard would still show "Pending").</p>
+        </div>
+
+        <div class="feature-card">
+          <h4>❓ Can I edit my project after submitting?</h4>
+          <p>No. Once submitted, project details cannot be changed. If you need to make corrections, ask your admin or teacher — they may advise you to submit a new version.</p>
+        </div>
+
+        <div class="feature-card">
+          <h4>❓ Can I see other students' projects or feedback?</h4>
+          <p>No. Students can only see their own projects and feedback. This is enforced at the database level — it's not just hidden, it's technically inaccessible.</p>
+        </div>
+
+        <div class="feature-card">
+          <h4>❓ The flash message (green/red notification) appeared for a second and disappeared</h4>
+          <p>Flash messages auto-dismiss after 4 seconds. You can also click the ✕ button on the right to dismiss them manually. They appear at the top of the page just below the navigation bar.</p>
+        </div>
+
+        <div class="feature-card">
+          <h4>❓ I uploaded a file but the teacher says they can't open it</h4>
+          <p>Make sure the file is one of the supported types: PDF, ZIP, PNG, JPG, TXT, PY, HTML, or DOCX. If the file is too large (over 16 MB), the upload may have silently failed. Try compressing or splitting the file.</p>
+        </div>
+
+        <div class="feature-card">
+          <h4>❓ The dark mode button (🌙) is in the nav bar — what does it do?</h4>
+          <p>It switches the site between a light background and a dark background. Click it to toggle. Your preference is saved in the browser so it remembers your choice next time.</p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ════════════ QUICK REF ════════════ -->
+    <div class="section" id="quick-ref">
+      <div class="section-header">
+        <div class="section-icon icon-blue">⚡</div>
+        <h2>19. Quick Reference</h2>
+      </div>
+
+      <div class="quick-ref">
+        <div class="qr-card student">
+          <h4>🎓 Student — I can…</h4>
+          <ul>
+            <li>Register with username + email</li>
+            <li>Submit a project with metadata + file</li>
+            <li>View my own submitted projects</li>
+            <li>Read feedback on reviewed projects</li>
+            <li>Change my password</li>
+            <li>Logout at any time</li>
+          </ul>
+        </div>
+        <div class="qr-card teacher">
+          <h4>🧑‍🏫 Teacher — I can…</h4>
+          <ul>
+            <li>View all student projects</li>
+            <li>Filter by tech/innovation/status</li>
+            <li>Open/download student files</li>
+            <li>Give remarks, suggestions, notes</li>
+            <li>Set a quality rating (1–5)</li>
+            <li>Update feedback at any time</li>
+          </ul>
+        </div>
+        <div class="qr-card admin">
+          <h4>🛡️ Admin — I can…</h4>
+          <ul>
+            <li>Create users of any role</li>
+            <li>Enable or disable accounts</li>
+            <li>Change any user's role</li>
+            <li>View system-wide statistics</li>
+            <li>Seed first admin account</li>
+            <li>Change my own password</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3>URL Reference</h3>
+      <table class="field-table">
+        <thead><tr><th>Page</th><th>URL</th><th>Who can access</th></tr></thead>
+        <tbody>
+          <tr><td>Login</td><td><code>/login</code></td><td>Everyone</td></tr>
+          <tr><td>Register</td><td><code>/register</code></td><td>Everyone (not logged in)</td></tr>
+          <tr><td>Student Dashboard</td><td><code>/student/dashboard</code></td><td>Students only</td></tr>
+          <tr><td>Submit Project</td><td><code>/student/submit</code></td><td>Students only</td></tr>
+          <tr><td>My Feedback</td><td><code>/student/my-feedback</code></td><td>Students only</td></tr>
+          <tr><td>Teacher Dashboard</td><td><code>/teacher/dashboard</code></td><td>Teachers only</td></tr>
+          <tr><td>All Projects</td><td><code>/teacher/projects</code></td><td>Teachers only</td></tr>
+          <tr><td>Give Feedback</td><td><code>/teacher/projects/[id]/feedback</code></td><td>Teachers only</td></tr>
+          <tr><td>Admin Dashboard</td><td><code>/admin/dashboard</code></td><td>Admins only</td></tr>
+          <tr><td>Manage Users</td><td><code>/admin/users</code></td><td>Admins only</td></tr>
+          <tr><td>Change Password</td><td><code>/change-password</code></td><td>Any logged-in user</td></tr>
+          <tr><td>Logout</td><td><code>/logout</code></td><td>Any logged-in user</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- FOOTER -->
+    <div style="text-align:center; padding: 2rem 0; color: var(--gray-400); font-size: 0.82rem; border-top: 1px solid var(--gray-200); margin-top: 2rem;">
+      <p><strong style="color:var(--gray-700);">FnB – Fetch and Build</strong> &nbsp;|&nbsp; Student Project Review &amp; Feedback Platform</p>
+      <p style="margin-top:4px;">Version 2.0 &nbsp;·&nbsp; IEEE 830-1998 &nbsp;·&nbsp; Flask + MongoDB + HTML/CSS/JS</p>
+      <p style="margin-top:4px;">Prepared by: FnB Project Team</p>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+
+<script>
+  // Highlight active sidebar link on scroll
+  const sections = document.querySelectorAll('[id]');
+  const navItems = document.querySelectorAll('.nav-item');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navItems.forEach(item => {
+          item.classList.toggle('active', item.getAttribute('href') === '#' + entry.target.id);
+        });
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+
+  sections.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>
