@@ -59,13 +59,13 @@
         <div class="detail-label">📎 Project File</div>
         <div class="detail-value">
           {% if project.file_path %}
-            <a href="{{ url_for('teacher.download_file', filename=project.file_path) }}"
-               class="btn btn-outline btn-sm" target="_blank">
-              📥 Open / Download File
-            </a>
-            <span class="text-muted" style="font-size:0.78rem; display:block; margin-top:4px;">
-              {{ project.file_path.split('_', 2)[-1] if '_' in project.file_path else project.file_path }}
-            </span>
+          <a href="{{ url_for('teacher.download_file', project_id=project._id) }}"
+            class="btn btn-outline btn-sm" target="_blank">
+            📥 Open / Download File
+          </a>
+          <span class="text-muted" style="font-size:0.78rem; display:block; margin-top:4px;">
+            {{ project.file_path.split('/')[-1] }}
+          </span>
           {% else %}
             <span class="text-muted">No file uploaded</span>
           {% endif %}
