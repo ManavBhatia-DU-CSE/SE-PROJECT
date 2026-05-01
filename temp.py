@@ -14,5 +14,3 @@ with app.app_context():
         'created_at': datetime.utcnow()
     })
     print("Admin created! Login: admin / admin123")
-
-

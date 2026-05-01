@@ -17,11 +17,18 @@ from werkzeug.utils import secure_filename
 from routes.auth_routes import login_required, role_required
 from models.project_model import ProjectModel
 from models.feedback_model import FeedbackModel
+import cloudinary
+import cloudinary.uploader
 
 student_bp = Blueprint('student', __name__, url_prefix='/student')
 
 ALLOWED_EXTENSIONS = {'pdf', 'zip', 'png', 'jpg', 'txt', 'py', 'html', 'docx'}
 
+cloudinary.config(
+    cloud_name = os.environ.get('CLOUDINARY_CLOUD_NAME'),
+    api_key    = os.environ.get('CLOUDINARY_API_KEY'),
+    api_secret = os.environ.get('CLOUDINARY_API_SECRET')
+)
 
 def allowed_file(filename):
     """Validate file extension – D-SEC-08"""
@@ -84,12 +91,23 @@ def submit_project():
             if not allowed_file(file.filename):
                 flash('Invalid file type. Allowed: pdf, zip, png, jpg, txt, py, html, docx', 'error')
                 return render_template('student/submit_project.html')
+            # safe_name = secure_filename(file.filename)
+            # timestamp = datetime.utcnow().strftime('%Y%m%d_%H%M%S')
+            # unique_name = f"{session['user_id']}_{timestamp}_{safe_name}"
+            # save_path = os.path.join(current_app.config['UPLOAD_FOLDER'], unique_name)
+            # file.save(save_path)
+            # file_path = unique_name  # Store relative name only, never web-accessible directly
             safe_name = secure_filename(file.filename)
             timestamp = datetime.utcnow().strftime('%Y%m%d_%H%M%S')
-            unique_name = f"{session['user_id']}_{timestamp}_{safe_name}"
-            save_path = os.path.join(current_app.config['UPLOAD_FOLDER'], unique_name)
-            file.save(save_path)
-            file_path = unique_name  # Store relative name only, never web-accessible directly
+            public_id = f"fnb/{session['user_id']}_{timestamp}_{safe_name}"
+
+            upload_result = cloudinary.uploader.upload(
+                file,
+                public_id=public_id,
+                resource_type="auto"   # handles pdf, zip, images etc.
+            )
+            file_path = upload_result['secure_url']  # this is what gets stored in MongoDB
+
 
         # Save to MongoDB via Manav's model
         ProjectModel.create_project(
