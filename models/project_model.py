@@ -125,6 +125,26 @@ class ProjectModel:
         """Count projects by status (pending/reviewed)."""
         return mongo.db[ProjectModel.COLLECTION].count_documents({'status': status})
 
+    @staticmethod
+    def teacher_dashboard_counts():
+        """Single aggregation: total, pending, reviewed (vs. three count queries)."""
+        pipeline = [
+            {'$group': {
+                '_id': None,
+                'total': {'$sum': 1},
+                'pending': {'$sum': {'$cond': [{'$eq': ['$status', 'pending']}, 1, 0]}},
+                'reviewed': {'$sum': {'$cond': [{'$eq': ['$status', 'reviewed']}, 1, 0]}},
+            }}
+        ]
+        row = next(mongo.db[ProjectModel.COLLECTION].aggregate(pipeline), None)
+        if not row:
+            return {'total': 0, 'pending': 0, 'reviewed': 0}
+        return {
+            'total': row['total'],
+            'pending': row['pending'],
+            'reviewed': row['reviewed'],
+        }
+
     # ── Update ────────────────────────────────────────────────────────────────
 
     @staticmethod

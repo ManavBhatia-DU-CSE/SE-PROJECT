@@ -71,8 +71,32 @@ class UserModel:
         Returns list sorted by created_at descending.
         """
         return list(
-            mongo.db[UserModel.COLLECTION].find().sort('created_at', -1)
+            mongo.db[UserModel.COLLECTION]
+            .find({}, {'password_hash': 0})
+            .sort('created_at', -1)
         )
+
+    @staticmethod
+    def admin_dashboard_user_stats():
+        """
+        Single aggregation for admin dashboard user counts (vs. three count queries).
+        """
+        pipeline = [
+            {'$group': {
+                '_id': None,
+                'total': {'$sum': 1},
+                'students': {'$sum': {'$cond': [{'$eq': ['$role', 'student']}, 1, 0]}},
+                'teachers': {'$sum': {'$cond': [{'$eq': ['$role', 'teacher']}, 1, 0]}},
+            }}
+        ]
+        row = next(mongo.db[UserModel.COLLECTION].aggregate(pipeline), None)
+        if not row:
+            return {'total_users': 0, 'total_students': 0, 'total_teachers': 0}
+        return {
+            'total_users': row['total'],
+            'total_students': row['students'],
+            'total_teachers': row['teachers'],
+        }
 
     # ── Count helpers for admin dashboard ─────────────────────────────────────
 

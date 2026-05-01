@@ -10,9 +10,7 @@ D-CL-03: Feedback.save(), Feedback.update()
 """
 
 
-from flask import (Blueprint, render_template, request, redirect, url_for, session, flash, current_app)
-from datetime import datetime
-import os
+from flask import Blueprint, render_template, request, redirect, url_for, session, flash
 from routes.auth_routes import role_required
 from models.project_model import ProjectModel
 from models.feedback_model import FeedbackModel
@@ -26,9 +24,10 @@ teacher_bp = Blueprint('teacher', __name__, url_prefix='/teacher')
 @teacher_bp.route('/dashboard')
 @role_required('teacher')
 def dashboard():
-    total_projects = ProjectModel.count_all()
-    pending        = ProjectModel.count_by_status('pending')
-    reviewed       = ProjectModel.count_by_status('reviewed')
+    counts = ProjectModel.teacher_dashboard_counts()
+    total_projects = counts['total']
+    pending = counts['pending']
+    reviewed = counts['reviewed']
     return render_template('teacher/dashboard.html',
                            username=session.get('username'),
                            total_projects=total_projects,

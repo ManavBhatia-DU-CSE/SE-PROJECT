@@ -24,9 +24,10 @@ admin_bp = Blueprint('admin', __name__, url_prefix='/admin')
 @role_required('admin')
 def dashboard():
     """Admin home with system-wide stats. REQ-4.1.5"""
-    total_users     = UserModel.count_all()
-    total_students  = UserModel.count_by_role('student')
-    total_teachers  = UserModel.count_by_role('teacher')
+    user_stats = UserModel.admin_dashboard_user_stats()
+    total_users = user_stats['total_users']
+    total_students = user_stats['total_students']
+    total_teachers = user_stats['total_teachers']
     total_projects  = ProjectModel.count_all()
     total_feedback  = FeedbackModel.count_all()
     return render_template('admin/dashboard.html',

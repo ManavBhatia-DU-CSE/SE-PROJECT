@@ -3,7 +3,7 @@
 
 import os
 from flask import Flask, redirect, url_for, session
-from db import mongo
+from db import mongo, ensure_indexes
 from routes.auth_routes import auth_bp
 from routes.student_routes import student_bp
 from routes.teacher_routes import teacher_bp
@@ -23,6 +23,9 @@ app.config['ALLOWED_EXTENSIONS'] = {'pdf', 'zip', 'png', 'jpg', 'txt', 'py', 'ht
 
 
 mongo.init_app(app)
+
+with app.app_context():
+    ensure_indexes()
 
 app.register_blueprint(auth_bp)
 app.register_blueprint(student_bp)

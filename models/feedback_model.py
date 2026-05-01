@@ -67,23 +67,32 @@ class FeedbackModel:
         """
         pipeline = [
             {'$match': {'student_id': ObjectId(student_id)}},
-            # Join with projects collection to get project title
             {'$lookup': {
                 'from': 'projects',
-                'localField': 'project_id',
-                'foreignField': '_id',
-                'as': 'project'
+                'let': {'pid': '$project_id'},
+                'pipeline': [
+                    {'$match': {'$expr': {'$eq': ['$_id', '$$pid']}}},
+                    {'$project': {
+                        'title': 1,
+                        'tech_stack': 1,
+                        'innovation_level': 1,
+                        'quality_rating': 1,
+                    }},
+                ],
+                'as': 'project',
             }},
             {'$unwind': {'path': '$project', 'preserveNullAndEmptyArrays': True}},
-            # Join with users to get teacher name
             {'$lookup': {
                 'from': 'users',
-                'localField': 'teacher_id',
-                'foreignField': '_id',
-                'as': 'teacher'
+                'let': {'tid': '$teacher_id'},
+                'pipeline': [
+                    {'$match': {'$expr': {'$eq': ['$_id', '$$tid']}}},
+                    {'$project': {'username': 1}},
+                ],
+                'as': 'teacher',
             }},
             {'$unwind': {'path': '$teacher', 'preserveNullAndEmptyArrays': True}},
-            {'$sort': {'created_at': -1}}
+            {'$sort': {'created_at': -1}},
         ]
         return list(mongo.db[FeedbackModel.COLLECTION].aggregate(pipeline))
 
