@@ -22,7 +22,7 @@ Collection Schema:
 Indexes: student_id, status, tech_stack, innovation_level
 """
 
-from datetime import datetime
+from datetime import datetime, timezone
 from bson import ObjectId
 from db import mongo
 
@@ -56,7 +56,7 @@ class ProjectModel:
             'quality_rating':   None,                   # Set by teacher later
             'file_path':        file_path,
             'status':           'pending',              # Default status
-            'submitted_at':     datetime.utcnow()
+            'submitted_at':     datetime.now(timezone.utc)
         }
         return mongo.db[ProjectModel.COLLECTION].insert_one(project_doc)
 
