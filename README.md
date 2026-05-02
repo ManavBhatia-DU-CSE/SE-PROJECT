@@ -261,3 +261,21 @@ with app.app_context():
 ---
 
 *FnB (Fetch and Build) — implementation aligned with **SRS V2 Final Doc.pdf**. README maintained by **Harsh** (documentation + base templates); full team credits in table above.*
+
+---
+
+## React UI prototype
+
+`FnB_ProjectManagement.jsx` is a standalone React prototype that was used only to visualize the initial look and flow of the FnB application. It is not connected to the Flask routes, MongoDB models, templates, deployment pipeline, or production runtime.
+
+No changes are required in the JSX file for the Flask application to run. To preview it locally as a demo, run it in a separate Vite React shell:
+
+```powershell
+npm create vite@latest fnb-prototype-demo -- --template react
+cd fnb-prototype-demo
+npm install
+Copy-Item ..\FnB_ProjectManagement.jsx .\src\App.jsx
+npm run dev
+```
+
+Then open the local URL printed by Vite, usually `http://localhost:5173/`.
