@@ -20,7 +20,7 @@ Collection Schema:
 Indexes: project_id (unique), student_id, teacher_id
 """
 
-from datetime import datetime
+from datetime import datetime, timezone
 from bson import ObjectId
 from db import mongo
 
@@ -50,7 +50,7 @@ class FeedbackModel:
             'remarks':           remarks,
             'suggestions':       suggestions,
             'improvement_notes': improvement_notes,
-            'created_at':        datetime.utcnow(),
+            'created_at':        datetime.now(timezone.utc),
             'updated_at':        None                    # Null until first update
         }
         return mongo.db[FeedbackModel.COLLECTION].insert_one(feedback_doc)
@@ -132,6 +132,6 @@ class FeedbackModel:
                 'remarks':           remarks,
                 'suggestions':       suggestions,
                 'improvement_notes': improvement_notes,
-                'updated_at':        datetime.utcnow()   # D-DB-03: updated_at
+                'updated_at':        datetime.now(timezone.utc)   # D-DB-03: updated_at
             }}
         )
