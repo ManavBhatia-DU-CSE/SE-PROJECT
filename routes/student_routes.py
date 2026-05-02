@@ -10,7 +10,7 @@ D-SEC-08: Secure File Uploads
 """
 
 import os
-from datetime import datetime
+from datetime import datetime, timezone
 from flask import (Blueprint, render_template, request, redirect,
                    url_for, session, flash, current_app)
 from werkzeug.utils import secure_filename
@@ -92,13 +92,13 @@ def submit_project():
                 flash('Invalid file type. Allowed: pdf, zip, png, jpg, txt, py, html, docx', 'error')
                 return render_template('student/submit_project.html')
             # safe_name = secure_filename(file.filename)
-            # timestamp = datetime.utcnow().strftime('%Y%m%d_%H%M%S')
+            # timestamp = datetime.now(timezone.utc).strftime('%Y%m%d_%H%M%S')
             # unique_name = f"{session['user_id']}_{timestamp}_{safe_name}"
             # save_path = os.path.join(current_app.config['UPLOAD_FOLDER'], unique_name)
             # file.save(save_path)
             # file_path = unique_name  # Store relative name only, never web-accessible directly
             safe_name = secure_filename(file.filename)
-            timestamp = datetime.utcnow().strftime('%Y%m%d_%H%M%S')
+            timestamp = datetime.now(timezone.utc).strftime('%Y%m%d_%H%M%S')
             public_id = f"fnb/{session['user_id']}_{timestamp}_{safe_name}"
 
             upload_result = cloudinary.uploader.upload(
