@@ -40,7 +40,7 @@ This repository implements the system described in that document. Feature scope,
 
 ## Project overview (SRS §1.4, §2.2)
 
-FnB digitizes student project evaluation: students submit work and metadata; teachers review, filter, and record structured feedback; administrators manage accounts. The **presentation layer** uses a **React** landing experience (`FnB_ProjectManagement.jsx`, CDN) plus **Jinja2** templates for authenticated flows, served by **Flask** (SRS §5.1). Persistent data lives in **MongoDB** (collections `users`, `projects`, `feedback` per SRS §5.3).
+FnB digitizes student project evaluation: students submit work and metadata; teachers review, filter, and record structured feedback; administrators manage accounts. The **presentation layer** uses a **React** prototype (`fnb-prototype-demo/src/FnB_ProjectManagement.jsx`) plus **Jinja2** templates for authenticated flows, served by **Flask** (SRS §5.1). Persistent data lives in **MongoDB** (collections `users`, `projects`, `feedback` per SRS §5.3).
 
 ### Key features (mapped to SRS §4)
 
@@ -54,7 +54,7 @@ FnB digitizes student project evaluation: students submit work and metadata; tea
 
 ```
 [Browser – HTML/CSS/JS + React landing]     ← Presentation layer
-  ├── Landing / demo (React)                  FnB_ProjectManagement.jsx
+  ├── Landing / demo (React)                  fnb-prototype-demo/src/FnB_ProjectManagement.jsx
   └── Authenticated pages (Jinja2)           templates/**/*.html
         │
         │ HTTP / HTTPS (HTTPS in production per SRS §3.4, §5.4.2 D-SEC-01)
@@ -83,7 +83,7 @@ SE-PROJECT/
 ├── requirements.txt
 ├── .env.example
 ├── .gitignore
-├── FnB_ProjectManagement.jsx   # React landing assets (SRS presentation layer)
+├── fnb-prototype-demo/         # Standalone Vite React UI prototype
 │
 ├── models/                     # Data layer accessors (D-CL-01 … D-CL-03)
 │   ├── user_model.py
@@ -266,15 +266,13 @@ with app.app_context():
 
 ## React UI prototype
 
-`FnB_ProjectManagement.jsx` is a standalone React prototype that was used only to visualize the initial look and flow of the FnB application. It is not connected to the Flask routes, MongoDB models, templates, deployment pipeline, or production runtime.
+`fnb-prototype-demo/` contains a standalone React prototype that was used only to visualize the initial look and flow of the FnB application. It is not connected to the Flask routes, MongoDB models, templates, deployment pipeline, or production runtime.
 
-No changes are required in the JSX file for the Flask application to run. To preview it locally as a demo, run it in a separate Vite React shell:
+No changes are required in the Flask application to run this demo. To preview it locally:
 
 ```powershell
-npm create vite@latest fnb-prototype-demo -- --template react
 cd fnb-prototype-demo
 npm install
-Copy-Item ..\FnB_ProjectManagement.jsx .\src\App.jsx
 npm run dev
 ```
 
