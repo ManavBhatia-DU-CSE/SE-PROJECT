@@ -16,7 +16,7 @@ Collection Schema:
   created_at    : DateTime
 """
 
-from datetime import datetime
+from datetime import datetime, timezone
 from bson import ObjectId
 from db import mongo
 
@@ -44,7 +44,7 @@ class UserModel:
             'role':          role,          # 'student' | 'teacher' | 'admin'
             'email':         email,
             'is_active':     True,          # REQ-4.1.5: admin can disable
-            'created_at':    datetime.utcnow()
+            'created_at':    datetime.now(timezone.utc)
         }
         return mongo.db[UserModel.COLLECTION].insert_one(user_doc)
 
