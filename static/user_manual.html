@@ -1349,7 +1349,7 @@
               from app import app<br/>
               from db import mongo<br/>
               import bcrypt<br/>
-              from datetime import datetime<br/>
+              from datetime import datetime, timezone<br/>
               <br/>
               with app.app_context():<br/>
               &nbsp;&nbsp;pw = bcrypt.hashpw(b'admin123', bcrypt.gensalt(rounds=10))<br/>
@@ -1359,7 +1359,7 @@
               &nbsp;&nbsp;&nbsp;&nbsp;'role': 'admin',<br/>
               &nbsp;&nbsp;&nbsp;&nbsp;'email': 'admin@fnb.com',<br/>
               &nbsp;&nbsp;&nbsp;&nbsp;'is_active': True,<br/>
-              &nbsp;&nbsp;&nbsp;&nbsp;'created_at': datetime.utcnow()<br/>
+              &nbsp;&nbsp;&nbsp;&nbsp;'created_at': datetime.now(timezone.utc)<br/>
               &nbsp;&nbsp;})<br/>
               &nbsp;&nbsp;print("Admin created!")
             </div>
